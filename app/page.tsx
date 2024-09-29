@@ -1,11 +1,9 @@
 import SideBar from "./components/SideBar";
 import ContentContainer from "./components/ContentContainer";
 import CardContainer from "./components/CardContainer";
-import BasicCard from "./components/StoryCard";
-import { Source, Story, Snippet } from "./(auth)/firebase/database_types";
+import { Snippet } from "./(auth)/firebase/database_types";
 import { db } from "./(auth)/firebase/config";
-import { collection, getDocs, getDoc, doc } from "firebase/firestore";
-import { Timestamp } from "firebase/firestore";
+import { collection, getDocs} from "firebase/firestore";
 import SnippetCard from "./components/SnippetCard";
 import { convertTimestampToDate } from "./(auth)/firebase/helper";
 

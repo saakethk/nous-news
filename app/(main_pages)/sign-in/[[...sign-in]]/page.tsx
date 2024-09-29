@@ -1,6 +1,5 @@
 "use client";
 
-import { SignIn } from "@clerk/clerk-react"
 import { Button } from "@nextui-org/react"
 import { useSignIn } from "@clerk/nextjs"
 import { OAuthStrategy } from "@clerk/types"

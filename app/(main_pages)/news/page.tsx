@@ -58,7 +58,7 @@ export default async function News() {
                     ))}
                 </CardContainer>
                 {single_source_data.map((source) => (
-                    <CardContainer heading={source.name}>
+                    <CardContainer key={source.name} heading={source.name}>
                         {source.stories.map((story) => (
                             <StoryCard key={story.id} id={story.id} headline={story.title} image_url={story.image} views={0} />
                         ))}

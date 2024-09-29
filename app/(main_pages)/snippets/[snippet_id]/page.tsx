@@ -6,8 +6,6 @@ import { doc, getDoc } from "firebase/firestore";
 import { convertTimestampToDate } from "@/app/(auth)/firebase/helper";
 import { ExternalLink, ThumbsUp } from 'lucide-react';
 import { Button } from "@nextui-org/react";
-import CardContainer from "@/app/components/CardContainer";
-import StoryCard from "@/app/components/StoryCard";
 import { getNewsStory } from "@/app/(main_pages)/news/[news_id]/page";
 
 async function getSnippet(snippet_id: string) {
