@@ -1,6 +1,6 @@
 import SideBar from "@/app/components/SideBar";
 import ContentContainer from "@/app/components/ContentContainer";
-import { AccountSignOutButton } from "@/app/components/AccountButtons";
+import { AccountSignOutButton } from "@/app/components/Buttons/AccountButtons";
 
 // Account Page
 // Private page which allows user to see settings and their own liked snippets along with suggestions.

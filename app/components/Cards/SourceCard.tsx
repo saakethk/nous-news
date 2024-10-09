@@ -1,12 +1,17 @@
-import {Card, CardBody, Image} from "@nextui-org/react";
+"use client";
+
+import { Card, CardBody, Image } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 
 export default function SourceCard({source, image_url, num_stories}: {source: string, image_url: string, num_stories: number}) {
+    const router = useRouter();
     return (
         <Card
             isBlurred
             isPressable
             className="border-none bg-background/60 dark:bg-default-100/50 basic_card"
             shadow="sm"
+            onPress={() => router.push(`/news/sources/${source}`)}
         >
             <CardBody>
                 <div className="grid grid-cols-6 md:grid-cols-12 gap-1 md:gap-4 items-center justify-center">

@@ -12,9 +12,9 @@
     "@auth/firebase-adapter": "^2.5.0",
     "@clerk/nextjs": "^5.6.2",
     "@clerk/themes": "^2.1.33",
-    "@next-auth/firebase-adapter": "^0.0.2-canary.207",
+    "@firebase/firestore": "^4.7.3",
     "@nextui-org/react": "^2.4.8",
-    "firebase": "^10.13.2",
+    "firebase": "^10.14.0",
     "firebase-admin": "^12.5.0",
     "framer-motion": "^11.5.6",
     "lucide": "^0.445.0",
@@ -22,7 +22,8 @@
     "next": "14.2.13",
     "next-auth": "^4.24.7",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "short-unique-id": "^5.2.0"
   },
   "devDependencies": {
     "@types/node": "^20",
