@@ -47,7 +47,8 @@ interface User {
     comments: Array<string>;
     liked_comments: Array<string>;
     name: string;
-    premium: boolean
+    premium: boolean;
+    last_login: Timestamp;
 }
 
 interface Discussion {
