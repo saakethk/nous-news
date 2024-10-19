@@ -1,7 +1,7 @@
 "use client";
 
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
-import { SideBarHomeButton, SideBarNewsButton, SideBarSignInButton, SideBarAccountButton, SideBarDiscussionsButton } from "./Buttons/SideBarNavButtons";
+import { SideBarHomeButton, SideBarNewsButton, SideBarSignInButton, SideBarAccountButton, SideBarDiscussionsButton } from "../Buttons/SideBarNavButtons";
 
 export default function SideBar() {
     return (

@@ -1,7 +1,9 @@
-import { Story } from "@/firebase/database_types";
-import { LikeStoryButton, DiscussionButton, SourceButton } from "../Buttons/StoryButtons";
 
-export default function SnippetExpandedCard({user_id, story}: {user_id: string, story: Story}) {
+import { Story, User } from "@/firebase/database_types";
+import { LikeStoryButton, DiscussionButton } from "../Buttons/StoryButtonsClient";
+import { SourceButton } from "../Buttons/StoryButtonsServer";
+
+export default function SnippetExpandedCard({ user, story }: { user: User, story: Story }) {
     return (
         <div key={story.id} className="snippet_card_expanded">
             <div className="snippet_card_title heading" style={{background: "url("+story.image+")"}}>
@@ -17,8 +19,8 @@ export default function SnippetExpandedCard({user_id, story}: {user_id: string, 
             </div>
             <div className="snippet_card_metadata">
                 <SourceButton story={story} />
-                <DiscussionButton user_id={user_id} story={story} />
-                <LikeStoryButton user_id={user_id} story={story} />
+                <DiscussionButton user={user} story={story} />
+                <LikeStoryButton user={user} story={story} />
             </div>
         </div>
     )

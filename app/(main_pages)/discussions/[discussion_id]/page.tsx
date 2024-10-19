@@ -1,27 +1,36 @@
-import SideBar from "@/app/components/SideBar";
-import ContentContainer from "@/app/components/ContentContainer";
-import { getComments, getDiscussion } from "@/firebase/helper";
+
+import SideBar from "@/app/components/General/SideBar";
+import ContentContainer from "@/app/components/General/ContentContainer";
 import DiscussionCard from "@/app/components/Cards/DiscussionCard";
 import CommentCard from "@/app/components/Cards/CommentCard";
+import { getComments, getDiscussion, getUser } from "@/firebase/helper";
+import { CommentButton } from "@/app/components/Buttons/DiscussionButtons";
+import { currentUser } from "@clerk/nextjs/server";
 
 export default async function DiscussionPage(
     { params }: { params: { discussion_id: string } }
 ) {
+
+    const clerk_user = await currentUser();
+    const user = await getUser(clerk_user!.id);
     const discussion = await getDiscussion(params.discussion_id);
-    console.log(discussion.comments);
     const comments = await getComments(discussion.comments);
+
     return (
         <>
             <SideBar />
             <ContentContainer hasheader={false} heading={params.discussion_id} subheading={"test"}>
-                <DiscussionCard discussion={JSON.parse(JSON.stringify(discussion))} type={1} />
+                <DiscussionCard discussion={JSON.parse(JSON.stringify(discussion))} isFullWidth={true} isPressable={false} />
                 <div className="comments_container">
-                    <h2 className="heading">
-                        Comments
-                        {comments.map((comment) => (
-                            <CommentCard comment={JSON.parse(JSON.stringify(comment))} />
-                        ))}
-                    </h2>
+                    <div className="comments_container_header">
+                        <h1 className="heading">
+                            Comments
+                        </h1>
+                        <CommentButton user={user} discussion={JSON.parse(JSON.stringify(discussion))} />
+                    </div>
+                    {comments.map((comment) => (
+                        <CommentCard key={comment.id} comment={JSON.parse(JSON.stringify(comment))} />
+                    ))}
                 </div>
             </ContentContainer>
         </>

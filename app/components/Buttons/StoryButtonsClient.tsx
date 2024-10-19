@@ -1,29 +1,32 @@
+
 "use client";
 
-import DiscussionModal from "../DiscussionModal";
-import { ThumbsUp, MessageSquarePlus, ExternalLink, ArrowRight } from "lucide-react";
-import { Story } from "@/firebase/database_types";
+import DiscussionModal from "../Modals/DiscussionModal";
+import { ThumbsUp, MessageSquarePlus } from "lucide-react";
+import { User, Story } from "@/firebase/database_types";
 import { likeStory, checkLikesStory } from "@/firebase/helper";
 import { useEffect, useState } from "react";
-import { Skeleton, useDisclosure, Button, Link } from '@nextui-org/react';
+import { Skeleton, useDisclosure, Button } from '@nextui-org/react';
 
 // Button for liking story
-function LikeStoryButton({ user_id, story }: { user_id: string, story: Story }) {
+function LikeStoryButton({ user, story }: { user: User, story: Story }) {
 
     const [isLiked, setIsLiked] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    var likes = story.likes;
 
     useEffect(() => {
         (async () => {
-            setIsLiked(await checkLikesStory(user_id, story.id));
+            setIsLiked(await checkLikesStory(user, story));
             setIsLoading(false);
         })();
     }, [])
 
     const handleClick = async () => {
-        setIsLiked(true);
-        likes = await likeStory(user_id, story.id, story.likes);
+        const { success, likes } = await likeStory(user, story);
+        if (success) {
+            setIsLiked(true);
+            story.likes = likes
+        }
     } 
 
     if (isLoading) {
@@ -38,7 +41,7 @@ function LikeStoryButton({ user_id, story }: { user_id: string, story: Story }) 
     else if (isLiked) {
         return (
             <Button endContent={<ThumbsUp />} className="story_text_metadata_button" isDisabled>
-                {likes} Likes
+                {story.likes} Likes
             </Button>
         )
     } else {
@@ -51,33 +54,16 @@ function LikeStoryButton({ user_id, story }: { user_id: string, story: Story }) 
 }
 
 // Button for creating discussion
-function DiscussionButton({ user_id, story }: { user_id: string, story: Story }) {
+function DiscussionButton({ user, story }: { user: User, story: Story }) {
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     return (
         <>
             <Button onPress={onOpen} endContent={<MessageSquarePlus />} className="story_text_metadata_button">
                 Discuss
             </Button>
-            <DiscussionModal user_id={user_id} onOpenChange={onOpenChange} isOpen={isOpen} story={story} />
+            <DiscussionModal user={user} onOpenChange={onOpenChange} isOpen={isOpen} story={story} />
         </>
     )
 }
 
-// Button for reading source
-function SourceButton({ story }: { story: Story }) {
-    return (
-        <Link className="story_text_metadata_item" href={story.link}>
-            Source &nbsp; <ExternalLink />
-        </Link>
-    )
-}
-
-function RelatedStoriesSourceButton({ story }: { story: Story }) {
-    return (
-        <Link className="story_text_metadata_item" href={"/news/sources/"+story.source}>
-            {story.source} &nbsp; <ArrowRight />
-        </Link>
-    )
-}
-
-export { LikeStoryButton, DiscussionButton, SourceButton, RelatedStoriesSourceButton };
+export { LikeStoryButton, DiscussionButton };

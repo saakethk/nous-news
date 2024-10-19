@@ -1,11 +1,11 @@
-import {
-  ClerkProvider
-} from '@clerk/nextjs'
-import type { Metadata } from "next";
-import localFont from "next/font/local";
+
 import "./globals.css";
+import localFont from "next/font/local";
 import React from "react";
+import { Suspense } from "react";
+import { ClerkProvider } from '@clerk/nextjs';
 import { dark } from '@clerk/themes';
+import type { Metadata } from "next";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

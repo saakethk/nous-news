@@ -1,7 +1,7 @@
 
-import SideBar from "@/app/components/SideBar";
-import ContentContainer from "@/app/components/ContentContainer";
-import CardContainer from "@/app/components/CardContainer";
+import SideBar from "@/app/components/General/SideBar";
+import ContentContainer from "@/app/components/General/ContentContainer";
+import CardContainer from "@/app/components/General/CardContainer";
 import SnippetCard from "@/app/components/Cards/SnippetCard";
 import { convertTimestampToDate } from "@/firebase/helper";
 import { getAllSnippets } from "@/firebase/helper";

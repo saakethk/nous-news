@@ -1,6 +1,23 @@
 
 import { Timestamp } from "firebase/firestore";
 
+interface User {
+    id: string;
+    active: boolean;
+    avatar: string;
+    date_joined: Timestamp;
+    email: string;
+    following: Array<string>;
+    liked: Array<string>;
+    discussed: Array<string>;
+    liked_discussions: Array<string>;
+    comments: Array<string>;
+    liked_comments: Array<string>;
+    name: string;
+    premium: boolean;
+    last_login: Timestamp;
+}
+
 interface Story {
     id: string;
     date_added: Timestamp;
@@ -10,19 +27,35 @@ interface Story {
     summary: string;
     title: string;
     snippet_association: string;
+    category: string;
     likes: number;
     discussions: Array<string>;
 }
 
-interface Source {
+interface Category {
+    id: string;
     name: string;
-    likes: number;
     num_stories: number;
-    image: string;
-    rss_feed_url: string;
-    description: string;
     stories: Array<string>;
-    date_added: Timestamp;
+}
+
+interface Feed {
+    id: string;
+    url: string;
+    category_association: string;
+}
+
+interface Source {
+    id: string;
+    name: string;
+    description: string;
+    logo: string
+    date_added: Timestamp
+    follows: number
+    num_stories: number
+    bias: number
+    feeds: Array<string>
+    stories: Array<string>
 }
 
 interface Snippet {
@@ -33,22 +66,6 @@ interface Snippet {
     sources: Array<string>;
     stories: Array<string>;
     thumbnail: string;
-}
-
-interface User {
-    id: string;
-    active: boolean;
-    avatar: string;
-    date_joined: Timestamp;
-    email: string;
-    liked: Array<string>;
-    discussed: Array<string>;
-    liked_discussions: Array<string>;
-    comments: Array<string>;
-    liked_comments: Array<string>;
-    name: string;
-    premium: boolean;
-    last_login: Timestamp;
 }
 
 interface Discussion {
@@ -68,6 +85,16 @@ interface Comment {
     text: string;
     likes: number;
     date_created: Timestamp;
+    replies: Array<string>;
 }
 
-export type { Story, Source, Snippet, User, Discussion, Comment };
+export type { 
+    Story,
+    Category,
+    Feed, 
+    Source, 
+    Snippet, 
+    User, 
+    Discussion, 
+    Comment 
+};

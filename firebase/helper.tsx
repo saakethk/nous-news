@@ -1,7 +1,7 @@
 
 import ShortUniqueId from 'short-unique-id';
 import { db } from "./config";
-import { Story, Snippet, User, Source, Discussion, Comment } from "./database_types";
+import { Story, Snippet, User, Source, Discussion, Comment, Category } from "./database_types";
 import { doc, setDoc, getDoc, Timestamp, getDocs, collection } from "firebase/firestore";
 
 
@@ -14,10 +14,38 @@ function generateID() {
 
 }
 
+// Gets username of person by getting unique part of email
+function getUsername(user: User) {
+
+  return "@"+user.email.substring(0, user.email.indexOf("@"));
+
+}
+
 // Converts Firebase Timestamp type into Typescript Date
 function convertTimestampToDate(timestamp: Timestamp): Date {
 
     return new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
+
+}
+
+// Gets number of days given a timestamp to current date
+function getNumDays(timestamp: Timestamp) {
+
+  const pastDate = convertTimestampToDate(timestamp);
+  const currentDate = new Date();
+  const differenceInMs: number = Math.abs(currentDate.getTime() - pastDate.getTime());
+  const millisecondsInHours: number = 1000 * 60 * 60;
+  const differenceInHours: number = Math.floor(differenceInMs / millisecondsInHours)
+  const millisecondsInDay: number = millisecondsInHours * 24;
+  const differenceInDays: number = Math.floor(differenceInMs / millisecondsInDay);
+  
+  if (differenceInDays == 0) {
+      return "Today (" + differenceInHours + " hours ago)";
+  } else if (differenceInDays == 1) {
+      return "1 day ago";
+  } else {
+      return differenceInDays + " days ago";
+  }
 
 }
 
@@ -166,12 +194,58 @@ async function getAllSources(get_stories: boolean = false) {
 
 }
 
+// Gets all categories and if needed the associated stories
+async function getAllCategories(get_stories: boolean = false) {
+
+  const categories: Category[] = [];
+  const categoriesRef = collection(db, "categories");
+  const querySnapshot = await getDocs(categoriesRef);
+
+  querySnapshot.forEach((doc) => {
+      categories.push(doc.data() as Source);
+  });
+
+  const categories_w_stories: Array<{name: string, stories: Array<Story>}> = [];
+
+  if (get_stories) {
+
+      for (const category of categories) {
+
+          const stories: Array<Story> = [];
+
+          for (const story_id of category.stories) {
+              stories.push(await getStory(story_id));
+          }
+          
+          if (stories.length != 0) {
+              categories_w_stories.push({
+                  name: category.name,
+                  stories: stories
+              })
+          }
+
+      }
+
+      return {
+          categories: categories,
+          categories_w_stories: categories_w_stories
+      };
+
+  } else {
+
+      return {
+          categories: categories,
+          categories_w_stories: categories_w_stories
+      };
+
+  }
+
+}
+
 // Check if user liked story already
-async function checkLikesStory(user_id: string, story_id: string) {
+async function checkLikesStory(user: User, story: Story) {
 
-    const user = await getUser(user_id);
-
-    if (user.liked.includes(story_id)) {
+    if (user.liked.includes(story.id)) {
         return true;
     }
     else {
@@ -181,31 +255,70 @@ async function checkLikesStory(user_id: string, story_id: string) {
 }
 
 // Updates like on story and user
-async function likeStory(user_id: string, story_id: string, current_likes: number) {
+async function likeStory(user: User, story: Story) {
     
-    const storyRef = doc(db, "stories", story_id);
-    const userRef = doc(db, "users", user_id);
-    const user = await getUser(user_id);
-    user.liked.push(story_id);
+    const storyRef = doc(db, "stories", story.id);
+    const userRef = doc(db, "users", user.id);
+    user.liked.push(story.id);
     
     try {
 
-        await setDoc(storyRef, { likes: current_likes + 1 }, { merge: true });
+        await setDoc(storyRef, { likes: story.likes + 1 }, { merge: true });
         await setDoc(userRef, { liked: user.liked}, { merge: true });
 
         return {
             success: true,
-            likes: current_likes + 1
+            likes: story.likes + 1
         }
 
     } catch (error) {
 
         return {
             success: false,
-            likes: current_likes
+            likes: story.likes
         }
 
     }
+
+}
+
+// Check if user liked story already
+async function checkFollowSource(user: User, source: Source) {
+
+  if (user.following.includes(source.id)) {
+      return true;
+  }
+  else {
+      return false;
+  }
+
+}
+
+// Updates like on story and user
+async function followSource(user: User, source: Source) {
+  
+  const sourceRef = doc(db, "sources", source.id);
+  const userRef = doc(db, "users", user.id);
+  user.following.push(source.id);
+  
+  try {
+
+      await setDoc(sourceRef, { follows: source.follows + 1 }, { merge: true });
+      await setDoc(userRef, { following: user.following}, { merge: true });
+
+      return {
+          success: true,
+          follows: source.follows + 1
+      }
+
+  } catch (error) {
+
+      return {
+          success: false,
+          follows: source.follows
+      }
+
+  }
 
 }
 
@@ -235,21 +348,23 @@ async function getAllDiscussions() {
 }
 
 // Creates new discussion
-async function createDiscussion(user_id: string, story_id: string, text_content: string) {
+async function createDiscussion(user: User, story: Story, text_content: string) {
     
     const discussionId = generateID();
     const discussionRef = doc(db, "discussions", discussionId);
 
-    const userRef = doc(db, "users", user_id);
-    const user = await getUser(user_id);
-    user.discussed.push(story_id);
+    const storyRef = doc(db, "stories", story.id);
+    story.discussions.push(discussionId);
+
+    const userRef = doc(db, "users", user.id);
+    user.discussed.push(discussionId);
 
     try {
 
         const discussion: Discussion = {
-          user_association: user_id,
+          user_association: user.id,
           id: discussionId,
-          story_association: story_id,
+          story_association: story.id,
           date_created: Timestamp.fromDate(new Date()),
           text: text_content,
           likes: 0,
@@ -257,6 +372,7 @@ async function createDiscussion(user_id: string, story_id: string, text_content:
         }
         await setDoc(discussionRef, discussion, { merge: true });
         await setDoc(userRef, { discussed: user.discussed }, { merge: true });
+        await setDoc(storyRef, { discussions: story.discussions }, { merge: true })
 
         return {
             success: true, 
@@ -323,46 +439,108 @@ async function getComments(comment_ids: Array<string>) {
         comments.push(await getComment(comment_id) as Comment);
     }
 
-    return comments;
+    return comments.sort((a, b) => convertTimestampToDate(b.date_created).getTime() - convertTimestampToDate(a.date_created).getTime());
+
+}
+
+// Gets list of replies
+async function getReplies(reply_ids: Array<string>) {
+
+    const replies: Comment[] = [];
+
+    for (const reply_id of reply_ids) {
+        replies.push(await getComment(reply_id) as Comment);
+    }
+
+    return replies.sort((a, b) => convertTimestampToDate(b.date_created).getTime() - convertTimestampToDate(a.date_created).getTime());
 
 }
 
 // Creates new discussion
-async function createComment(user_id: string, discussion_id: string, text_content: string) {
+async function createComment(user: User, discussion: Discussion, text_content: string) {
     
     const commentId = generateID();
     const commentRef = doc(db, "comments", commentId);
 
-    const userRef = doc(db, "users", user_id);
-    const user = await getUser(user_id);
+    const discussionRef = doc(db, "discussions", discussion.id)
+    discussion.comments.push(commentId)
+
+    const userRef = doc(db, "users", user.id);
     user.comments.push(commentId);
 
     try {
 
         const comment: Comment = {
             id: commentId,
-            user_association: user_id,
-            discussion_association: discussion_id,
+            user_association: user.id,
+            discussion_association: discussion.id,
             text: text_content,
             likes: 0,
-            date_created: Timestamp.fromDate(new Date())
+            date_created: Timestamp.fromDate(new Date()),
+            replies: []
         }
         await setDoc(commentRef, comment, { merge: true });
-        await setDoc(userRef, { discussed: user.comments }, { merge: true });
+        await setDoc(userRef, { comments: user.comments }, { merge: true });
+        await setDoc(discussionRef, { comments: discussion.comments }, { merge: true });
 
         return {
             success: true, 
-            id: commentId
+            id: commentId,
+            comment: comment
         };
 
     } catch (error) {
 
         return {
             success: false, 
-            id: commentId
+            id: commentId,
+            comment: {} as Comment
         };
 
     }
+
+}
+
+// Creates new discussion
+async function createCommentReply(user: User, comment: Comment, text_content: string) {
+    
+  const replyId = generateID();
+  const replyRef = doc(db, "comments", replyId);
+
+  const commentRef = doc(db, "comments", comment.id)
+  comment.replies.push(replyId)
+
+  const userRef = doc(db, "users", user.id);
+  user.comments.push(replyId);
+
+  try {
+
+      const reply: Comment = {
+          id: replyId,
+          user_association: user.id,
+          discussion_association: comment.discussion_association,
+          text: text_content,
+          likes: 0,
+          date_created: Timestamp.fromDate(new Date()),
+          replies: []
+      }
+      await setDoc(replyRef, reply, { merge: true });
+      await setDoc(userRef, { comments: user.comments }, { merge: true });
+      await setDoc(commentRef, { replies: comment.replies }, { merge: true });
+
+      return {
+          success: true, 
+          id: replyId
+      };
+
+  } catch (error) {
+
+      return {
+          success: false, 
+          id: replyId
+      };
+
+  }
 
 }
 
@@ -414,5 +592,12 @@ export {
     getDiscussion,
     getAllDiscussions,
     createDiscussion,
-    likeDiscussion
+    likeDiscussion,
+    getAllCategories,
+    followSource,
+    checkFollowSource,
+    getNumDays,
+    getUsername,
+    createCommentReply,
+    getReplies
 };

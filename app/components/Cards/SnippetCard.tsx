@@ -1,9 +1,14 @@
-import {Card, Image, CardFooter, Link} from "@nextui-org/react";
+"use client";
+
+import { Card, Image, CardFooter, Link } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 
 export default function SnippetCard({id, headline, image_url}: {id: string, headline: string, image_url: string}) {
+    const router = useRouter()
     return (
         <Card
         isPressable
+        onPress={() => router.push("/snippets/"+id)}
         isFooterBlurred
         radius="lg"
         className="border-none snippet_card"
@@ -15,9 +20,9 @@ export default function SnippetCard({id, headline, image_url}: {id: string, head
                 src={image_url}
                 width={200}
             />
-            <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
-                <p className="text-tiny text-black/80">{headline}</p>
-                <Link className="text-tiny text-black bg-black/20 hover:bg-black/40 rounded-lg px-3 py-1" href={"/snippets/"+id}>
+            <CardFooter className="py-2 -my-1 justify-between overflow-hidden absolute before:rounded-xl bottom-1 w-[calc(100%)] shadow-small z-10">
+                <p className="text-tiny text-white/80">{headline}</p>
+                <Link className="text-tiny text-white/100 bg-black/50 hover:bg-black/80 rounded-lg px-3 py-1" href={"/snippets/"+id}>
                     Read
                 </Link>
             </CardFooter>

@@ -1,17 +1,19 @@
 
-import SideBar from "@/app/components/SideBar";
-import ContentContainer from "@/app/components/ContentContainer";
-import CardContainer from "@/app/components/CardContainer";
-import { StoryCard } from "@/app/components/Cards/StoryCard";
-import { LikeStoryButton, DiscussionButton, SourceButton, RelatedStoriesSourceButton } from "@/app/components/Buttons/StoryButtons";
-import { convertTimestampToDate, getStory, getRelatedStories } from "@/firebase/helper";
+import SideBar from "@/app/components/General/SideBar";
+import ContentContainer from "@/app/components/General/ContentContainer";
+import CardContainer from "@/app/components/General/CardContainer";
+import StoryCard from "@/app/components/Cards/StoryCard";
+import { LikeStoryButton, DiscussionButton } from "@/app/components/Buttons/StoryButtonsClient";
+import { SourceButton, RelatedStoriesSourceButton } from "@/app/components/Buttons/StoryButtonsServer";
+import { convertTimestampToDate, getStory, getRelatedStories, getUser } from "@/firebase/helper";
 import { currentUser } from "@clerk/nextjs/server";
 
 export default async function NewsStory(
     { params }: { params: { news_id: string } }
 ) {
 
-    const user = await currentUser();
+    const clerk_user = await currentUser();
+    const user = await getUser(clerk_user!.id);
     const story = await getStory(params.news_id);
     const related_stories = await getRelatedStories(params.news_id, story.snippet_association);
 
@@ -28,14 +30,14 @@ export default async function NewsStory(
                     </p>
                 </div>
                 <div className="story_text_metadata_container">
-                    <LikeStoryButton user_id={user!.id} story={JSON.parse(JSON.stringify(story))} />
-                    <DiscussionButton user_id={user!.id} story={JSON.parse(JSON.stringify(story))} />
+                    <LikeStoryButton user={JSON.parse(JSON.stringify(user))} story={JSON.parse(JSON.stringify(story))} />
+                    <DiscussionButton user={JSON.parse(JSON.stringify(user))} story={JSON.parse(JSON.stringify(story))} />
                     <SourceButton story={JSON.parse(JSON.stringify(story))} />
                     <RelatedStoriesSourceButton story={JSON.parse(JSON.stringify(story))} />
                 </div>
                 <CardContainer heading="Related News">
                     {related_stories.map((story) => (
-                        <StoryCard key={story.id} id={story.id} headline={story.title} image_url={story.image} likes={story.likes} />
+                        <StoryCard key={story.id} story={JSON.parse(JSON.stringify(story))} />
                     ))}
                 </CardContainer> 
             </ContentContainer>

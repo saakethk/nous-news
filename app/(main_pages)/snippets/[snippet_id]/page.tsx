@@ -1,9 +1,8 @@
 
-import SideBar from "@/app/components/SideBar";
-import ContentContainer from "@/app/components/ContentContainer";
+import SideBar from "@/app/components/General/SideBar";
+import ContentContainer from "@/app/components/General/ContentContainer";
 import SnippetExpandedCard from "@/app/components/Cards/SnippetExpandedCard";
-import { convertTimestampToDate } from "@/firebase/helper";
-import { getSnippet, getStories } from "@/firebase/helper";
+import { getSnippet, getStories, getUser, convertTimestampToDate } from "@/firebase/helper";
 import { currentUser } from "@clerk/nextjs/server";
 import { Button } from "@nextui-org/react";
 import { ArrowDown } from "lucide-react";
@@ -12,7 +11,8 @@ export default async function SnippetPage(
     { params }: { params: { snippet_id: string } }
 ) {
 
-    const user = await currentUser();
+    const clerk_user = await currentUser();
+    const user = await getUser(clerk_user!.id);
     const snippet = await getSnippet(params.snippet_id);
     const stories = await getStories(snippet.stories);
     
@@ -45,7 +45,7 @@ export default async function SnippetPage(
                         </div>
                     </div>
                     {stories.map((story) => (
-                        <SnippetExpandedCard key={story.id} user_id={user!.id} story={JSON.parse(JSON.stringify(story))} />
+                        <SnippetExpandedCard key={story.id} user={JSON.parse(JSON.stringify(user))} story={JSON.parse(JSON.stringify(story))} />
                     ))}
                 </div>
             </ContentContainer>
