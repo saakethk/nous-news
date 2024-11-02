@@ -1,6 +1,6 @@
 
-import SideBar from "@/app/components/General/SideBar";
-import ContentContainer from "@/app/components/General/ContentContainer";
+import SideBar from "@/app/components/Navigation/SideBar";
+import ContentContainer from "@/app/components/Containers/ContentContainer";
 import CommentCard from "@/app/components/Cards/CommentCard";
 import { Link } from "@nextui-org/react";
 import { getUser, getComment, getReplies } from "@/firebase/helper";

@@ -1,5 +1,5 @@
-import SideBar from "@/app/components/General/SideBar";
-import ContentContainer from "@/app/components/General/ContentContainer";
+import SideBar from "@/app/components/Navigation/SideBar";
+import ContentContainer from "@/app/components/Containers/ContentContainer";
 import { AccountSignOutButton } from "@/app/components/Buttons/AccountButtons";
 
 // Account Page

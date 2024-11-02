@@ -1,6 +1,6 @@
 
-import SideBar from "@/app/components/General/SideBar";
-import ContentContainer from "@/app/components/General/ContentContainer";
+import SideBar from "@/app/components/Navigation/SideBar";
+import ContentContainer from "@/app/components/Containers/ContentContainer";
 import SnippetExpandedCard from "@/app/components/Cards/SnippetExpandedCard";
 import { getSnippet, getStories, getUser, convertTimestampToDate } from "@/firebase/helper";
 import { currentUser } from "@clerk/nextjs/server";

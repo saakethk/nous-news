@@ -1,6 +1,6 @@
 
-import SideBar from "@/app/components/General/SideBar";
-import ContentContainer from "@/app/components/General/ContentContainer";
+import SideBar from "@/app/components/Navigation/SideBar";
+import ContentContainer from "@/app/components/Containers/ContentContainer";
 import DiscussionCard from "@/app/components/Cards/DiscussionCard";
 import CommentCard from "@/app/components/Cards/CommentCard";
 import { getComments, getDiscussion, getUser } from "@/firebase/helper";
@@ -19,8 +19,10 @@ export default async function DiscussionPage(
     return (
         <>
             <SideBar />
-            <ContentContainer hasheader={false} heading={params.discussion_id} subheading={"test"}>
-                <DiscussionCard discussion={JSON.parse(JSON.stringify(discussion))} isFullWidth={true} isPressable={false} />
+            <ContentContainer hasheader={false} heading={params.discussion_id}>
+                <div className="discussion_card_container">
+                    <DiscussionCard discussion={JSON.parse(JSON.stringify(discussion))} isFullWidth={true} isPressable={false} />
+                </div>
                 <div className="comments_container">
                     <div className="comments_container_header">
                         <h1 className="heading">

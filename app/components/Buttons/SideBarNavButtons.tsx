@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@nextui-org/react"
-import { House, Newspaper, User, LogIn, MessagesSquare } from 'lucide-react';
+import { House, Newspaper, LogIn, MessagesSquare, History } from 'lucide-react';
 import { useRouter } from "next/navigation";
 
 function SideBarHomeButton({vertical}: {vertical: boolean}) {
@@ -44,33 +44,33 @@ function SideBarDiscussionsButton({vertical}: {vertical: boolean}) {
     const router = useRouter();
     if (vertical) {
         return (
-            <Button startContent={<MessagesSquare />} color="primary" variant="flat" className="sidebar_vertical_button" onClick={() => router.push('/discussions')}>
+            <Button startContent={<MessagesSquare />} color="primary" variant="flat" className="sidebar_vertical_button" onClick={() => router.push('/discussions/trending')}>
                 Discussions
             </Button>  
         )
     }
     else {
         return (
-            <Button isIconOnly color="primary" className="sidebar_horizontal_button" onClick={() => router.push('/discussions')}>
+            <Button isIconOnly color="primary" className="sidebar_horizontal_button" onClick={() => router.push('/discussions/trending')}>
                 <MessagesSquare />
             </Button> 
         )
     }
 }
 
-function SideBarAccountButton({vertical}: {vertical: boolean}) {
+function SideBarHistoryButton({vertical}: {vertical: boolean}) {
     const router = useRouter();
     if (vertical) {
         return (
-            <Button startContent={<User />} color="primary" variant="flat" className="sidebar_vertical_button" onClick={() => router.push('/account')}>
-                Account
+            <Button startContent={<History />} color="primary" variant="flat" className="sidebar_vertical_button" onClick={() => router.push('/account')}>
+                History
             </Button>  
         )
     }
     else {
         return (
             <Button isIconOnly color="primary" className="sidebar_horizontal_button" onClick={() => router.push('/account')}>
-                <User />
+                <History />
             </Button> 
         )
     }
@@ -94,4 +94,4 @@ function SideBarSignInButton({vertical}: {vertical: boolean}) {
     }
 }
 
-export { SideBarHomeButton, SideBarNewsButton, SideBarAccountButton, SideBarSignInButton, SideBarDiscussionsButton };
+export { SideBarHomeButton, SideBarNewsButton, SideBarHistoryButton, SideBarSignInButton, SideBarDiscussionsButton };

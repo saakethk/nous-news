@@ -2,7 +2,8 @@
 import ShortUniqueId from 'short-unique-id';
 import { db } from "./config";
 import { Story, Snippet, User, Source, Discussion, Comment, Category } from "./database_types";
-import { doc, setDoc, getDoc, Timestamp, getDocs, collection } from "firebase/firestore";
+import { doc, setDoc, getDoc, Timestamp, getDocs, collection, query, orderBy, limit } from "firebase/firestore";
+import { QueryLimitConstraint, QueryFieldFilterConstraint, QueryOrderByConstraint } from "@firebase/firestore";
 
 
 // Generates unique id for creating objects
@@ -105,6 +106,24 @@ async function getAllSnippets() {
     });
 
     return snippets;
+
+}
+
+// Gets all snippets
+async function getAllStories(trending: boolean = true) {
+
+    const stories: Story[] = [];
+    const storiesRef = collection(db, "stories");
+    if (trending == true) {
+        const storiesRef = query(collection(db, "stories"), orderBy("likes"), limit(9));
+    }
+    const querySnapshot = await getDocs(storiesRef);
+
+    querySnapshot.forEach((doc) => {
+        stories.push(doc.data() as Story);
+    });
+
+    return stories;
 
 }
 
@@ -333,10 +352,24 @@ async function getDiscussion(discussion_id: string) {
 }
 
 // Gets all discussions
-async function getAllDiscussions() {
+async function getAllDiscussions(filters: (QueryFieldFilterConstraint | QueryOrderByConstraint | QueryLimitConstraint)[] = []) {
 
     const discussions: Discussion[] = [];
-    const discussionsRef = collection(db, "discussions");
+    var discussionsRef = query(collection(db, "discussions"));
+    switch(filters.length) {
+        case 1: {
+            discussionsRef = query(collection(db, "discussions"), filters[0]);
+            break;
+        }
+        case 2: {
+            discussionsRef = query(collection(db, "discussions"), filters[1]);
+            break;
+        }
+        case 3: {
+            discussionsRef = query(collection(db, "discussions"), filters[2]);
+            break;
+        }
+    }
     const querySnapshot = await getDocs(discussionsRef);
 
     querySnapshot.forEach((doc) => {
@@ -368,11 +401,12 @@ async function createDiscussion(user: User, story: Story, text_content: string) 
           date_created: Timestamp.fromDate(new Date()),
           text: text_content,
           likes: 0,
+          num_comments: 0,
           comments: []
         }
         await setDoc(discussionRef, discussion, { merge: true });
         await setDoc(userRef, { discussed: user.discussed }, { merge: true });
-        await setDoc(storyRef, { discussions: story.discussions }, { merge: true })
+        await setDoc(storyRef, { discussions: story.discussions, num_discussions: 0 }, { merge: true })
 
         return {
             success: true, 
@@ -477,11 +511,12 @@ async function createComment(user: User, discussion: Discussion, text_content: s
             text: text_content,
             likes: 0,
             date_created: Timestamp.fromDate(new Date()),
+            num_replies: 0,
             replies: []
         }
         await setDoc(commentRef, comment, { merge: true });
         await setDoc(userRef, { comments: user.comments }, { merge: true });
-        await setDoc(discussionRef, { comments: discussion.comments }, { merge: true });
+        await setDoc(discussionRef, { comments: discussion.comments, num_comments: discussion.comments.length }, { merge: true });
 
         return {
             success: true, 
@@ -522,11 +557,12 @@ async function createCommentReply(user: User, comment: Comment, text_content: st
           text: text_content,
           likes: 0,
           date_created: Timestamp.fromDate(new Date()),
+          num_replies: 0,
           replies: []
       }
       await setDoc(replyRef, reply, { merge: true });
       await setDoc(userRef, { comments: user.comments }, { merge: true });
-      await setDoc(commentRef, { replies: comment.replies }, { merge: true });
+      await setDoc(commentRef, { replies: comment.replies, num_replies: comment.replies.length }, { merge: true });
 
       return {
           success: true, 
@@ -573,6 +609,21 @@ async function likeComment(user_id: string, comment_id: string, current_likes: n
 
 }
 
+async function getUserFollowedStories(user: User) {
+
+    const followed_sources = user.following;
+    const followed_stories: Story[] = [];
+    
+    for (const source_id of followed_sources) {
+        
+        const source = await getSource(source_id, true);
+        followed_stories.push(source.stories[source.stories.length-1]);
+
+    }
+
+    return followed_stories;
+}
+
 export { 
     convertTimestampToDate, 
     getUser,
@@ -599,5 +650,7 @@ export {
     getNumDays,
     getUsername,
     createCommentReply,
-    getReplies
+    getReplies,
+    getAllStories,
+    getUserFollowedStories
 };

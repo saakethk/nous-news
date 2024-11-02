@@ -1,9 +1,10 @@
 
-import SideBar from "@/app/components/General/SideBar";
-import ContentContainer from "@/app/components/General/ContentContainer";
-import CardContainer from "@/app/components/General/CardContainer";
+import SideBar from "@/app/components/Navigation/SideBar";
+import ContentContainer from "@/app/components/Containers/ContentContainer";
+import CardContainer from "@/app/components/Containers/CardContainer";
 import SourceCard from "@/app/components/Cards/SourceCard";
 import StoryCard from "@/app/components/Cards/StoryCard";
+import TrendingStories from "@/app/components/Carousels/TrendingStories";
 import { getAllSources, getAllCategories, getUser } from "@/firebase/helper";
 import { currentUser } from "@clerk/nextjs/server";
 
@@ -21,14 +22,15 @@ export default async function News() {
     return (
         <>
             <SideBar />
-            <ContentContainer heading="News" subheading="Browse the latest news summaries from around the world">
-                <CardContainer key="sources" heading="Sources">
+            <ContentContainer heading="News">
+                <TrendingStories />
+                <CardContainer key="sources" heading="Sources" description="Verified sources you can follow">
                     {sources.map((source) => (
                         <SourceCard key={source.id} source={JSON.parse(JSON.stringify(source))} user={user} />
                     ))}
                 </CardContainer>
                 {categories_w_stories.map((category) => (
-                    <CardContainer key={category.name} heading={capitalizeFirstLetter(category.name)}>
+                    <CardContainer key={category.name} heading={capitalizeFirstLetter(category.name)} description={"Stories in category of "+category.name}>
                         {category.stories.map((story) => (
                             <StoryCard key={story.id} story={JSON.parse(JSON.stringify(story))} />
                         ))}

@@ -29,6 +29,7 @@ interface Story {
     snippet_association: string;
     category: string;
     likes: number;
+    num_discussions: number;
     discussions: Array<string>;
 }
 
@@ -74,6 +75,7 @@ interface Discussion {
     story_association: string;
     text: string;
     likes: number;
+    num_comments: number;
     comments: Array<string>;
     date_created: Timestamp;
 }
@@ -85,6 +87,7 @@ interface Comment {
     text: string;
     likes: number;
     date_created: Timestamp;
+    num_replies: number;
     replies: Array<string>;
 }
 

@@ -17,7 +17,7 @@ export default async function DiscussionCard({ discussion, isFullWidth = false, 
     
     var discussion_link = "#";
     if (isPressable == true) {
-        var discussion_link = "/discussions/"+discussion.id
+        discussion_link = "/discussion/"+discussion.id
     }
     
     return (
@@ -49,7 +49,7 @@ export default async function DiscussionCard({ discussion, isFullWidth = false, 
                 </CardBody>
                 <CardFooter className="gap-3 justify-between">
                     <div className="flex gap-1 font-semibold text-default-400 text-small">
-                        {getNumDays(story.date_added)}
+                        {getNumDays(discussion.date_created)}
                     </div>
                     <div className="flex gap-1 font-semibold text-default-400 text-small">
                         {discussion.comments.length}

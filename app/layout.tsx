@@ -2,7 +2,6 @@
 import "./globals.css";
 import localFont from "next/font/local";
 import React from "react";
-import { Suspense } from "react";
 import { ClerkProvider } from '@clerk/nextjs';
 import { dark } from '@clerk/themes';
 import type { Metadata } from "next";
@@ -42,6 +41,7 @@ export default function RootLayout({
           termsPageUrl: '/terms',
         },
       }}
+      signInFallbackRedirectUrl={"/sign-in"}
     >
       <html lang="en">
         <body

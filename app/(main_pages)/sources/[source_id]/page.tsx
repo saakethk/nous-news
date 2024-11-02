@@ -1,7 +1,7 @@
 
-import SideBar from "@/app/components/General/SideBar";
-import ContentContainer from "@/app/components/General/ContentContainer";
-import CardContainer from "@/app/components/General/CardContainer";
+import SideBar from "@/app/components/Navigation/SideBar";
+import ContentContainer from "@/app/components/Containers/ContentContainer";
+import CardContainer from "@/app/components/Containers/CardContainer";
 import SourceHeader from "@/app/components/Headers/SourceHeader";
 import StoryCard from "@/app/components/Cards/StoryCard";
 import { getSource, getUser } from "@/firebase/helper";
