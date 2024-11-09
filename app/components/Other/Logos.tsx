@@ -3,7 +3,7 @@
 // LAST EDIT: 11/06/24
 
 // TYPE
-"use server";
+"use client";
 
 // IMPORTS
 import { Image } from "@nextui-org/react";
@@ -49,4 +49,7 @@ function NousLogo() {
     )
 }
 
-export { GoogleLogo, NousLogo };
+export { 
+    GoogleLogo, 
+    NousLogo 
+}

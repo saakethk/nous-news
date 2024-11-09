@@ -374,6 +374,7 @@ a {
   padding-left: 0em;
   border: 3px solid var(--accent_secondary);
   border-radius: var(--border_radius_outer);
+  background: var(--background);
 }
 
 .sign_in_call_to_action {
