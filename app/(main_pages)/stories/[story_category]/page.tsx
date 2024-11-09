@@ -20,15 +20,15 @@ export default async function StoriesPage(
     }
 ) {
 
-     // Gets story category
-     const story_category = (await params).story_category;
+    // Gets story category
+    const story_category = (await params).story_category;
 
-     // Gets relevant date cutoff
-     const relevantDate = new Date();
-     relevantDate.setDate(relevantDate.getDate() - 1);
+    // Gets relevant date cutoff
+    const relevantDate = new Date();
+    relevantDate.setDate(relevantDate.getDate() - 1);
  
      // Gets the filters associated with stories
-    let filters: { link: string, name: string, filters: (QueryFieldFilterConstraint | QueryOrderByConstraint | QueryLimitConstraint)[] }[] = [
+    const filters: { link: string, name: string, filters: (QueryFieldFilterConstraint | QueryOrderByConstraint | QueryLimitConstraint)[] }[] = [
         {
             link: "most_liked",
             name: "Most Liked",
