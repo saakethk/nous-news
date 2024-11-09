@@ -11,7 +11,7 @@ import { ThumbsUp, MessageSquarePlus, ExternalLink } from "lucide-react";
 import { User, Story } from "@/firebase/database_types";
 import { likeStory, checkLikesStory } from "@/firebase/helper";
 import { useEffect, useState } from "react";
-import { Skeleton, useDisclosure, Button, Link } from '@nextui-org/react';
+import { Skeleton, useDisclosure, Button } from '@nextui-org/react';
 import { useRouter } from "next/navigation";
 
 // LIKE STORY BUTTON

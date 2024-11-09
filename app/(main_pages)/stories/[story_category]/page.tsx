@@ -28,7 +28,7 @@ export default async function StoriesPage(
      relevantDate.setDate(relevantDate.getDate() - 1);
  
      // Gets the filters associated with stories
-    var filters: { link: string, name: string, filters: (QueryFieldFilterConstraint | QueryOrderByConstraint | QueryLimitConstraint)[] }[] = [
+    let filters: { link: string, name: string, filters: (QueryFieldFilterConstraint | QueryOrderByConstraint | QueryLimitConstraint)[] }[] = [
         {
             link: "most_liked",
             name: "Most Liked",

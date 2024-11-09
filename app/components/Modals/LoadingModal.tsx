@@ -10,16 +10,12 @@ export default function LoadingModal({ isOpen, onOpenChange }: {isOpen: boolean,
         <>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} hideCloseButton className="discuss_modal" placement="center">
                 <ModalContent>
-                    {(onClose) => (
-                    <>
-                        <div className="search_loader">
-                            <CircularProgress aria-label="Loading..." />
-                            <p className="small_heading">
-                                Loading Search...
-                            </p>
-                        </div>
-                    </>
-                    )}
+                    <div className="search_loader">
+                        <CircularProgress aria-label="Loading..." />
+                        <p className="small_heading">
+                            Loading Search...
+                        </p>
+                    </div>
                 </ModalContent>
             </Modal>
         </>

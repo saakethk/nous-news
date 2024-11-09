@@ -24,7 +24,7 @@ export default async function StoriesPage(
     return (
         <>
             <SideBar />
-            <ContentContainer heading={"Search for "+formatTitle(search_category)} hassearch={true} searchtype="stories">
+            <ContentContainer heading={"Search for "+formatTitle(search_category)}>
                 <SearchContainer type={search_category} />
             </ContentContainer>
         </>

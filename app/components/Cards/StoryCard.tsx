@@ -8,7 +8,7 @@
 // IMPORTS
 import { Story } from "@/firebase/database_types";
 import { getNumDays, formatTitle } from "@/firebase/helper";
-import { Card, CardBody, Image, CardFooter, Link } from "@nextui-org/react";
+import { Card, CardBody, Image, CardFooter } from "@nextui-org/react";
 import { MessageCircle, ThumbsUp } from "lucide-react";
 import { useRouter } from "next/navigation";
 

@@ -7,6 +7,8 @@
 
 // IMPORTS
 import { UserButton } from '@clerk/nextjs';
+import { Link } from '@nextui-org/react';
+import { Search } from 'lucide-react';
 
 // CONTENT CONTAINER COMPONENT
 export default async function ContentContainer(
@@ -26,7 +28,16 @@ export default async function ContentContainer(
                                 {heading}
                             </h1>
                         </div>
-                        <UserButton/>
+                        <div className="flex gap-2">
+                            {
+                                (hassearch) ?
+                                <Link isBlock href={"/search/"+searchtype}>
+                                    <Search />
+                                </Link>:
+                                <></>
+                            }
+                            <UserButton/>
+                        </div>
                     </div>
                     <div className="content_container_content">
                         {children}

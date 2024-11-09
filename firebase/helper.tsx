@@ -133,7 +133,7 @@ async function getAllSnippets() {
 async function getAllStories(filters: (QueryFieldFilterConstraint | QueryOrderByConstraint | QueryLimitConstraint)[] = []) {
 
     const stories: Story[] = [];
-    var storiesRef = query(collection(db, "stories"));
+    let storiesRef = query(collection(db, "stories"));
     switch(filters.length) {
         case 1: {
             storiesRef = query(collection(db, "stories"), filters[0]);
@@ -466,7 +466,7 @@ async function getDiscussion(discussion_id: string) {
 async function getAllDiscussions(filters: (QueryFieldFilterConstraint | QueryOrderByConstraint | QueryLimitConstraint)[] = []) {
 
     const discussions: Discussion[] = [];
-    var discussionsRef = query(collection(db, "discussions"));
+    let discussionsRef = query(collection(db, "discussions"));
     switch(filters.length) {
         case 1: {
             discussionsRef = query(collection(db, "discussions"), filters[0]);
