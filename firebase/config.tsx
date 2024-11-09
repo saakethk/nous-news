@@ -2,11 +2,11 @@
 import { getApps, initializeApp, getApp } from "@firebase/app";
 import { initializeFirestore, setLogLevel } from "@firebase/firestore";
 
-setLogLevel('debug');
+// setLogLevel('debug');
 
-console.log(
-  process.env.NEXT_PUBLIC_FIREBASE_API_KEY
-)
+// console.log(
+//   process.env.NEXT_PUBLIC_FIREBASE_API_KEY
+// )
 
 // Credentials
 const firebaseConfig = {
