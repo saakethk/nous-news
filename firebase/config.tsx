@@ -1,5 +1,5 @@
 
-import { initializeApp, getApp, getApps } from "firebase/app";
+import { getApps, initializeApp } from "@firebase/app";
 import { getFirestore } from "@firebase/firestore";
 
 // Credentials

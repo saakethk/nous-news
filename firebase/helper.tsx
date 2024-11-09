@@ -6,8 +6,7 @@
 import ShortUniqueId from 'short-unique-id';
 import { db } from "./config";
 import { Story, Snippet, User, Source, Discussion, Comment, Category } from "./database_types";
-import { doc, setDoc, getDoc, Timestamp, getDocs, collection, query } from "firebase/firestore";
-import { QueryLimitConstraint, QueryFieldFilterConstraint, QueryOrderByConstraint } from "@firebase/firestore";
+import { doc, setDoc, getDoc, Timestamp, getDocs, collection, query, QueryLimitConstraint, QueryFieldFilterConstraint, QueryOrderByConstraint } from "@firebase/firestore";
 
 // Generates unique id for creating objects
 function generateID() {
