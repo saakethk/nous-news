@@ -1,6 +1,13 @@
 
+// AUTHOR: SAAKETH KESIREDDY
+// LAST EDIT: 11/05/24
+
+// TYPE
+"use client";
+
+// IMPORTS
 import { Card, CardBody, Image, Link } from "@nextui-org/react";
-import { FollowSourceButton } from "../Buttons/SourceButtons";
+import { FollowSourceButton } from "../Buttons/Source/SourceButtons";
 import { Source, User } from "@/firebase/database_types";
 
 export default function SourceCard({user, source}: {user: User, source: Source}) {

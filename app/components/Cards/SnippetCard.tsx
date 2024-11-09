@@ -1,21 +1,31 @@
+
+// AUTHOR: SAAKETH KESIREDDY
+// LAST EDIT: 11/05/24
+
+// TYPE
 "use client";
 
-import { Card, Image, CardFooter, Link } from "@nextui-org/react";
+// IMPORTS
+import { Card, Image, CardFooter, Link} from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { Snippet } from "@/firebase/database_types";
 
-export default function SnippetCard({ snippet }: { snippet: Snippet }) {
+// SNIPPET CARD
+function SnippetCard({ snippet }: { snippet: Snippet }) {
+
+    // Retreives router functions
     const router = useRouter()
+
     return (
         <Card
         isPressable
-        onPress={() => router.push("/snippets/"+snippet.id)}
+        onPress={() => router.push("/snippet/"+snippet.id)}
         isFooterBlurred
         radius="lg"
         className="border-none snippet_card"
         >
             <Image
-                alt="Woman listing to music"
+                alt="Snippet Thumbnail"
                 className="object-cover"
                 height={200}
                 src={snippet.thumbnail}
@@ -31,4 +41,8 @@ export default function SnippetCard({ snippet }: { snippet: Snippet }) {
             </CardFooter>
         </Card>
     )
+}
+
+export {
+    SnippetCard
 }

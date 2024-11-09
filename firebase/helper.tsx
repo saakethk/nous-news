@@ -1,10 +1,13 @@
 
+// AUTHOR: SAAKETH KESIREDDY
+// LAST EDIT: 11/05/24
+
+// IMPORTS
 import ShortUniqueId from 'short-unique-id';
 import { db } from "./config";
 import { Story, Snippet, User, Source, Discussion, Comment, Category } from "./database_types";
-import { doc, setDoc, getDoc, Timestamp, getDocs, collection, query, orderBy, limit } from "firebase/firestore";
+import { doc, setDoc, getDoc, Timestamp, getDocs, collection, query } from "firebase/firestore";
 import { QueryLimitConstraint, QueryFieldFilterConstraint, QueryOrderByConstraint } from "@firebase/firestore";
-
 
 // Generates unique id for creating objects
 function generateID() {
@@ -23,7 +26,7 @@ function getUsername(user: User) {
 }
 
 // Converts Firebase Timestamp type into Typescript Date
-function convertTimestampToDate(timestamp: Timestamp): Date {
+function convertTimestampToDate(timestamp: Timestamp) {
 
     return new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
 
@@ -32,22 +35,39 @@ function convertTimestampToDate(timestamp: Timestamp): Date {
 // Gets number of days given a timestamp to current date
 function getNumDays(timestamp: Timestamp) {
 
-  const pastDate = convertTimestampToDate(timestamp);
-  const currentDate = new Date();
-  const differenceInMs: number = Math.abs(currentDate.getTime() - pastDate.getTime());
-  const millisecondsInHours: number = 1000 * 60 * 60;
-  const differenceInHours: number = Math.floor(differenceInMs / millisecondsInHours)
-  const millisecondsInDay: number = millisecondsInHours * 24;
-  const differenceInDays: number = Math.floor(differenceInMs / millisecondsInDay);
-  
-  if (differenceInDays == 0) {
-      return "Today (" + differenceInHours + " hours ago)";
-  } else if (differenceInDays == 1) {
-      return "1 day ago";
-  } else {
-      return differenceInDays + " days ago";
-  }
+    const pastDate = convertTimestampToDate(timestamp);
+    const currentDate = new Date();
+    const differenceInMs: number = Math.abs(currentDate.getTime() - pastDate.getTime());
+    const millisecondsInHours: number = 1000 * 60 * 60;
+    const differenceInHours: number = Math.floor(differenceInMs / millisecondsInHours)
+    const millisecondsInDay: number = millisecondsInHours * 24;
+    const differenceInDays: number = Math.floor(differenceInMs / millisecondsInDay);
 
+    if (differenceInDays == 0) {
+        return "Today (" + differenceInHours + " hours ago)";
+    } else if (differenceInDays == 1) {
+        return "1 day ago";
+    } else {
+        return differenceInDays + " days ago";
+    }
+
+}
+
+// Gets phrase with cutoff defined
+function formatTitle(headline: string, cutoff: number = 0) {
+
+    if (headline != null) {
+        if (cutoff != 0) {
+            if (headline.length > cutoff) {
+                return headline.substring(0, cutoff) + "...";
+            }
+            return headline;
+        } else {
+            return headline.charAt(0).toUpperCase() + headline.slice(1);
+        }
+    }
+
+    return "";
 }
 
 // Gets user
@@ -110,12 +130,23 @@ async function getAllSnippets() {
 }
 
 // Gets all snippets
-async function getAllStories(trending: boolean = true) {
+async function getAllStories(filters: (QueryFieldFilterConstraint | QueryOrderByConstraint | QueryLimitConstraint)[] = []) {
 
     const stories: Story[] = [];
-    const storiesRef = collection(db, "stories");
-    if (trending == true) {
-        const storiesRef = query(collection(db, "stories"), orderBy("likes"), limit(9));
+    var storiesRef = query(collection(db, "stories"));
+    switch(filters.length) {
+        case 1: {
+            storiesRef = query(collection(db, "stories"), filters[0]);
+            break;
+        }
+        case 2: {
+            storiesRef = query(collection(db, "stories"), filters[1]);
+            break;
+        }
+        case 3: {
+            storiesRef = query(collection(db, "stories"), filters[2]);
+            break;
+        }
     }
     const querySnapshot = await getDocs(storiesRef);
 
@@ -273,6 +304,30 @@ async function checkLikesStory(user: User, story: Story) {
 
 }
 
+// Check if user liked comment already
+async function checkLikesComment(user: User, comment: Comment) {
+
+    if (user.liked_comments.includes(comment.id)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+
+}
+
+// Check if user liked discussion already
+async function checkLikesDiscussion(user: User, discussion: Discussion) {
+
+    if (user.liked_discussions.includes(discussion.id)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+
+}
+
 // Updates like on story and user
 async function likeStory(user: User, story: Story) {
     
@@ -283,7 +338,7 @@ async function likeStory(user: User, story: Story) {
     try {
 
         await setDoc(storyRef, { likes: story.likes + 1 }, { merge: true });
-        await setDoc(userRef, { liked: user.liked}, { merge: true });
+        await setDoc(userRef, { liked: user.liked }, { merge: true });
 
         return {
             success: true,
@@ -295,6 +350,62 @@ async function likeStory(user: User, story: Story) {
         return {
             success: false,
             likes: story.likes
+        }
+
+    }
+
+}
+
+// Updates like on comment and user
+async function likeComment(user: User, comment: Comment) {
+    
+    const commentRef = doc(db, "comments", comment.id);
+    const userRef = doc(db, "users", user.id);
+    user.liked_comments.push(comment.id);
+    
+    try {
+
+        await setDoc(commentRef, { likes: comment.likes + 1 }, { merge: true });
+        await setDoc(userRef, { liked_comments: user.liked_comments }, { merge: true });
+
+        return {
+            success: true,
+            likes: comment.likes + 1
+        }
+
+    } catch (error) {
+
+        return {
+            success: false,
+            likes: comment.likes
+        }
+
+    }
+
+}
+
+// Updates like on comment and user
+async function likeDiscussion(user: User, discussion: Discussion) {
+    
+    const discussionRef = doc(db, "discussions", discussion.id);
+    const userRef = doc(db, "users", user.id);
+    user.liked_discussions.push(discussion.id);
+    
+    try {
+
+        await setDoc(discussionRef, { likes: discussion.likes + 1 }, { merge: true });
+        await setDoc(userRef, { liked_discussions: user.liked_discussions }, { merge: true });
+
+        return {
+            success: true,
+            likes: discussion.likes + 1
+        }
+
+    } catch (error) {
+
+        return {
+            success: false,
+            likes: discussion.likes
         }
 
     }
@@ -418,35 +529,6 @@ async function createDiscussion(user: User, story: Story, text_content: string) 
         return {
             success: false, 
             id: discussionId
-        };
-
-    }
-
-}
-
-// Updates like on discussion and user
-async function likeDiscussion(user_id: string, discussion_id: string, current_likes: number) {
-    
-    const discussionRef = doc(db, "discussions", discussion_id);
-    const userRef = doc(db, "users", user_id);
-    const user = await getUser(user_id);
-    user.liked_discussions.push(discussion_id);
-    
-    try {
-
-        await setDoc(discussionRef, { likes: current_likes + 1 }, { merge: true });
-        await setDoc(userRef, { liked: user.liked_discussions }, { merge: true });
-
-        return {
-            success: true,
-            likes: current_likes + 1
-        };
-
-    } catch (error) {
-
-        return {
-            success: false,
-            likes: current_likes
         };
 
     }
@@ -580,35 +662,6 @@ async function createCommentReply(user: User, comment: Comment, text_content: st
 
 }
 
-// Updates like on comment and user
-async function likeComment(user_id: string, comment_id: string, current_likes: number) {
-    
-    const commentRef = doc(db, "comments", comment_id);
-    const userRef = doc(db, "users", user_id);
-    const user = await getUser(user_id);
-    user.liked_comments.push(comment_id);
-    
-    try {
-
-        await setDoc(commentRef, { likes: current_likes + 1 }, { merge: true });
-        await setDoc(userRef, { liked: user.liked_comments }, { merge: true });
-
-        return {
-            success: true,
-            likes: current_likes + 1
-        };
-
-    } catch (error) {
-
-        return {
-            success: false,
-            likes: current_likes
-        };
-
-    }
-
-}
-
 async function getUserFollowedStories(user: User) {
 
     const followed_sources = user.following;
@@ -631,6 +684,8 @@ export {
     getStories,
     getRelatedStories,
     checkLikesStory,
+    checkLikesComment,
+    checkLikesDiscussion,
     likeStory,
     getSnippet, 
     getAllSnippets,
@@ -652,5 +707,6 @@ export {
     createCommentReply,
     getReplies,
     getAllStories,
-    getUserFollowedStories
-};
+    getUserFollowedStories,
+    formatTitle
+}

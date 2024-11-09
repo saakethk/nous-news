@@ -1,11 +1,21 @@
 
-import { NousLogo } from "../Navigation/Logos";
+// AUTHOR: SAAKETH KESIREDDY
+// LAST EDIT: 11/06/24
 
-export default function SignInContainer({ children }: { children: React.ReactNode }) {
+// TYPE
+"use server";
+
+// IMPORTS
+import { NousLogo } from "../Other/Logos";
+
+// SIGN IN CONTAINER COMPONENT
+export default async function SignInContainer(
+    { children }: 
+    { children: React.ReactNode }
+) {
     return (
         <div className="sign_in_container">
-            <div className="sign_in_graphic">
-            </div>
+            <div className="sign_in_graphic" />
             <div className="sign_in_content">
                 <div className="sign_in_providers">
                     <NousLogo />

@@ -1,10 +1,16 @@
 
-"use client";
+// AUTHOR: SAAKETH KESIREDDY
+// LAST EDIT: 11/04/24
 
-import { SideBarHomeButton, SideBarNewsButton, SideBarHistoryButton, SideBarDiscussionsButton } from "../Buttons/SideBarNavButtons";
-import { NousLogo } from "./Logos";
+// TYPE
+"use server";
 
-export default function SideBar() {
+// IMPORTS
+import { SideBarHomeButton, SideBarNewsButton, SideBarDiscussionsButton, SideBarHistoryButton } from "../Buttons/SideBar/SideBarNavButtons";
+import { NousLogo } from "../Other/Logos";
+
+// SIDEBAR COMPONENT
+export default async function SideBar() {
     return (
         <>
             <div className="sidebar_vertical_container">

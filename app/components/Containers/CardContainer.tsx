@@ -1,8 +1,19 @@
 
+// AUTHOR: SAAKETH KESIREDDY
+// LAST EDIT: 11/06/24
+
+// TYPE
+"use server";
+
+// IMPORTS
 import { Tooltip } from "@nextui-org/react";
 import { CircleAlert } from "lucide-react";
 
-export default function CardContainer({ heading, description, children }: { heading: string, description: string, children: React.ReactNode }) {
+// CARD CONTAINER COMPONENT
+export default async function CardContainer(
+    { heading, description, children }: 
+    { heading: string, description: string, children: React.ReactNode }
+) {
     return (
         <div className="card_container">
             <div className="card_container_heading flex justify-between">
@@ -20,8 +31,10 @@ export default function CardContainer({ heading, description, children }: { head
                     <CircleAlert />
                 </Tooltip>
             </div>
-            <div className="card_container_content">
-                {children}
+            <div className="card_container_content_container">
+                <div className="card_container_content">
+                    {children}
+                </div>
             </div>
         </div>
     )

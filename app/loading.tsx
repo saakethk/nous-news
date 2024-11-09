@@ -1,5 +1,5 @@
 
-import LoadingPage from "./components/Navigation/LoadingPage";
+import LoadingPage from "./components/Other/LoadingLogo";
 
 export default function Loading() {
     return (

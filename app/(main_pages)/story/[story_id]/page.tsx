@@ -1,21 +1,38 @@
 
+// AUTHOR: SAAKETH KESIREDDY
+// LAST EDIT: 11/05/24
+
+// TYPE
+"use server";
+
+// IMPORTS
 import SideBar from "@/app/components/Navigation/SideBar";
 import ContentContainer from "@/app/components/Containers/ContentContainer";
 import CardContainer from "@/app/components/Containers/CardContainer";
-import StoryCard from "@/app/components/Cards/StoryCard";
-import { LikeStoryButton, DiscussionButton } from "@/app/components/Buttons/StoryButtonsClient";
-import { SourceButton, RelatedStoriesSourceButton } from "@/app/components/Buttons/StoryButtonsServer";
+import { StoryCard } from "@/app/components/Cards/StoryCard";
+import { LikeStoryButton, DiscussionButton } from "@/app/components/Buttons/Story/StoryButtons";
+import { RelatedStoriesSourceButton } from "@/app/components/Buttons/Story/StoryButtonsSSR";
+import { SourceButton } from "@/app/components/Buttons/Story/StoryButtons";
 import { getStory, getRelatedStories, getUser } from "@/firebase/helper";
 import { currentUser } from "@clerk/nextjs/server";
 
-export default async function NewsStory(
-    { params }: { params: { story_id: string } }
+// Story Page
+export default async function StoryPage(
+    { params }: { 
+        params: Promise<{ story_id: string }>
+    }
 ) {
 
+    // Gets story id
+    const story_id = (await params).story_id;
+
+    // Gets user
     const clerk_user = await currentUser();
     const user = await getUser(clerk_user!.id);
-    const story = await getStory(params.story_id);
-    const related_stories = await getRelatedStories(params.story_id, story.snippet_association);
+
+    // Gets story and its related stories
+    const story = await getStory(story_id);
+    const related_stories = await getRelatedStories(story_id, story.snippet_association);
 
     return (
         <>
@@ -37,7 +54,7 @@ export default async function NewsStory(
                 </div>
                 <CardContainer heading="Related Stories" description="Stories related to this news article">
                     {related_stories.map((story) => (
-                        <StoryCard key={story.id} story={JSON.parse(JSON.stringify(story))} />
+                        <StoryCard key={story.id} story={JSON.parse(JSON.stringify(story))} isAdaptable={false} />
                     ))}
                 </CardContainer> 
             </ContentContainer>

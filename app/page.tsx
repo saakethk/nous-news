@@ -2,9 +2,9 @@
 import SideBar from "@/app/components/Navigation/SideBar";
 import ContentContainer from "@/app/components/Containers/ContentContainer";
 import CardContainer from "@/app/components/Containers/CardContainer";
-import StoryCarousel from "./components/Carousels/StoryCarousel";
-import SnippetCard from "./components/Cards/SnippetCard";
-import StoryCard from "./components/Cards/StoryCard";
+import StoryCarousel from "./components/Other/StoryCarousel";
+import { SnippetCard } from "./components/Cards/SnippetCard";
+import { StoryCard } from "./components/Cards/StoryCard";
 import { getAllSnippets, getAllStories, getUserFollowedStories, getUser } from "@/firebase/helper";
 import { currentUser } from "@clerk/nextjs/server";
 
@@ -28,7 +28,7 @@ export default async function Home() {
                 </CardContainer>
                 <CardContainer heading="Following" description="Recent stories from sources you follow">
                     {followed_stories.map((story) => (
-                        <StoryCard key={story.id} story={JSON.parse(JSON.stringify(story))} />
+                        <StoryCard key={story.id} story={JSON.parse(JSON.stringify(story))} isAdaptable={false} />
                     ))}
                 </CardContainer>
             </ContentContainer>

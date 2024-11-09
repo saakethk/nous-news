@@ -1,14 +1,11 @@
 
+import React from "react";
 import { Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Textarea, ButtonGroup } from "@nextui-org/react";
-import React, { useState } from "react";
-import { Discussion, User } from "@/firebase/database_types";
-import { createComment } from "@/firebase/helper";
-import { Check, Send, X, RefreshCcw } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { Send, X, RefreshCcw } from "lucide-react";
 
 function SuccessModal({ title, success_message, post_text, isOpen, onOpenChange, reset }: { title: string, success_message: string, post_text: string, isOpen: boolean, onOpenChange: (isOpen: boolean) => void, reset: () => void }) {
     return (
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange} hideCloseButton className="discuss_modal">
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange} hideCloseButton className="discuss_modal" placement="center">
             <ModalContent>
                 {(onClose) => (
                 <>
@@ -38,7 +35,7 @@ function SuccessModal({ title, success_message, post_text, isOpen, onOpenChange,
 
 function PostModal({ title, text_placeholder, text_limit, isOpen, onOpenChange, post_text, setPostText, publishPost }: { title: string, text_placeholder: string, text_limit: number, isOpen: boolean, onOpenChange: (isOpen: boolean) => void, post_text: string, setPostText: (value: string) => void, publishPost: () => void }) {
     return (
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange} hideCloseButton className="discuss_modal">
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange} hideCloseButton className="discuss_modal" placement="center">
             <ModalContent>
             {(onClose) => (
                 <>
