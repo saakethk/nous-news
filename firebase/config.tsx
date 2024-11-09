@@ -1,6 +1,8 @@
 
 import { getApps, initializeApp, getApp } from "@firebase/app";
-import { getFirestore, initializeFirestore } from "@firebase/firestore";
+import { initializeFirestore, setLogLevel } from "@firebase/firestore";
+
+setLogLevel('debug');
 
 // Credentials
 const firebaseConfig = {
