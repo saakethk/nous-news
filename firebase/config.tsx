@@ -1,6 +1,6 @@
 
 import { initializeApp, getApp, getApps } from "firebase/app";
-import { initializeFirestore } from "firebase/firestore";
+import { getFirestore } from "@firebase/firestore";
 
 // Credentials
 const firebaseConfig = {
@@ -16,8 +16,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const db = initializeFirestore(app, {
-  experimentalAutoDetectLongPolling: true
-});
+const db = getFirestore(app);
 
 export { app, db }
