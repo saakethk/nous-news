@@ -4,6 +4,10 @@ import { initializeFirestore, setLogLevel } from "@firebase/firestore";
 
 setLogLevel('debug');
 
+console.log(
+  process.env.NEXT_PUBLIC_FIREBASE_API_KEY
+)
+
 // Credentials
 const firebaseConfig = {
   databaseURL: 'https://'+process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID+'.firebaseio.com',
