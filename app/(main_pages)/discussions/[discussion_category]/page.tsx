@@ -11,6 +11,8 @@ import ContentContainer from "@/app/components/Containers/ContentContainer";
 import DiscussionsContainer from "@/app/components/Containers/DiscussionsContainer";
 import CategoryNavBar from "@/app/components/Navigation/CategoryNavBar";
 import { Filter } from "@/firebase/database_types";
+import { currentUser } from "@clerk/nextjs/server";
+import { getUser } from "@/firebase/helper";
 
 // DISCUSSIONS PAGE
 export default async function DiscussionsPage(
@@ -21,6 +23,10 @@ export default async function DiscussionsPage(
 
     // Gets discussion category
     const discussion_category = (await params).discussion_category;
+
+    // Gets user
+    const clerk_user = await currentUser();
+    const user = await getUser(clerk_user!.id);
 
     // Gets relevant date cutoff
     const relevantDate = new Date();
@@ -79,7 +85,7 @@ export default async function DiscussionsPage(
             <SideBar />
             <ContentContainer heading="Discussions">
                 <CategoryNavBar filters={filters} collection_name="discussions" />
-                <DiscussionsContainer filter={chosen_filter} />
+                <DiscussionsContainer user={user} filter={chosen_filter} />
             </ContentContainer>
         </>
     )

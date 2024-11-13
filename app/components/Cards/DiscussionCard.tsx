@@ -98,8 +98,8 @@ function DiscussionCardLoader(
 
 // DISCUSSION CARD COMPONENT
 function DiscussionCard(
-    { discussion, isFullWidth = false, isPressable = true, isAdaptable = false }: 
-    { discussion: Discussion, isFullWidth?: boolean, isPressable?: boolean, isAdaptable?: boolean }
+    { current_user, discussion, isFullWidth = false, isPressable = true, isAdaptable = false }: 
+    { current_user: User, discussion: Discussion, isFullWidth?: boolean, isPressable?: boolean, isAdaptable?: boolean }
 ) {
 
     // Stores whether button is loading, user, and story
@@ -139,11 +139,11 @@ function DiscussionCard(
                             </div>
                             <ButtonGroup className="comment_reply_buttons">
                                 <LikeDiscussionButton 
-                                user={JSON.parse(JSON.stringify(user))} 
+                                user={JSON.parse(JSON.stringify(current_user))} 
                                 discussion={JSON.parse(JSON.stringify(discussion))} 
                                 />
                                 <CommentButton 
-                                user={JSON.parse(JSON.stringify(user))} 
+                                user={JSON.parse(JSON.stringify(current_user))} 
                                 discussion={JSON.parse(JSON.stringify(discussion))} 
                                 />
                             </ButtonGroup>

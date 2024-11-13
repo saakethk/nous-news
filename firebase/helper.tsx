@@ -89,14 +89,32 @@ async function getStory(story_id: string) {
 
 }
 
+// Gets multiple discussions
+async function getDiscussions(discussion_ids: string[]) {
+
+    const discussions: Discussion[] = [];
+
+    for (const discussion_id of discussion_ids) {
+        const discussion: Discussion = await getDiscussion(discussion_id);
+        if (discussion != undefined) {
+            discussions.push(discussion);
+        }
+    }
+    
+    return discussions;
+
+}
+
 // Gets multiple stories
 async function getStories(story_ids: string[]) {
 
     const stories: Story[] = [];
 
     for (const story_id of story_ids) {
-        const story = await getStory(story_id);
-        stories.push(story);
+        const story: Story = await getStory(story_id);
+        if (story != undefined) {
+            stories.push(story);
+        }
     }
     
     return stories;
@@ -791,5 +809,6 @@ export {
     getReplies,
     getAllStories,
     getUserFollowedStories,
-    formatTitle
+    formatTitle,
+    getDiscussions
 }

@@ -18,7 +18,7 @@ async function RelatedStoriesSourceButton({ story }: { story: Story }) {
   const { source } = await getSource(story.source);
 
   return (
-      <Link className="story_text_metadata_item" href={"/sources/"+source.id}>
+      <Link className="story_text_metadata_item" href={"/source/"+source.id}>
           {source.name} &nbsp; <ArrowRight />
       </Link>
   )

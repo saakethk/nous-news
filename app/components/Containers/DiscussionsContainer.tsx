@@ -8,15 +8,15 @@
 // IMPORTS
 import { DiscussionCard, DiscussionCardLoader } from "../Cards/DiscussionCard";
 import { getAllDiscussions } from "@/firebase/helper";
-import { Discussion, Filter } from "@/firebase/database_types";
+import { Discussion, Filter, User } from "@/firebase/database_types";
 import { useState, useEffect } from "react";
 import { Button } from "@nextui-org/react";
 import { ChevronDown, PartyPopper } from "lucide-react";
 
 // DISCUSSIONS CONTAINER
 export default function DiscussionsContainer(
-    { filter }: 
-    { filter: Filter }
+    { user, filter }: 
+    { user: User, filter: Filter }
 ) {
 
     // Stores whether button is loading and liked
@@ -63,7 +63,7 @@ export default function DiscussionsContainer(
                     (!isLoading) ?
                     <>
                         {discussions.map((discussion) => (
-                            <DiscussionCard key={discussion.id} discussion={JSON.parse(JSON.stringify(discussion))} isAdaptable={true} />
+                            <DiscussionCard key={discussion.id} current_user={user} discussion={JSON.parse(JSON.stringify(discussion))} isAdaptable={true} />
                         ))}
                     </>:
                     <>

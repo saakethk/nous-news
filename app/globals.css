@@ -277,6 +277,10 @@ html, body {
 
 /* Home Carousel */
 
+hr {
+  border: 1.5px solid var(--neutral);
+}
+
 .swiper_container {
   width: 100%;
   margin: auto;
@@ -623,6 +627,7 @@ a {
 .discussion_card {
   background: var(--background);
   width: 350px;
+  min-width: 350px;
   height: fit-content;
   padding: 0em;
   border: 3px solid var(--neutral_dark);
@@ -691,6 +696,7 @@ a {
   background: var(--neutral_dark);
   border-radius: var(--border_radius_outer);
   width: 100%;
+  min-width: 400px;
   height: fit-content;
   margin: auto;
   float: none;
@@ -913,6 +919,32 @@ a {
 /* Loader */
 .loader {
   background: var(--neutral);
+}
+
+/* Recall */
+.recall_graphic_container {
+  width: 100%;
+  padding: 1em;
+  padding-top: 0em;
+}
+
+.recall_graphic {
+  width: 100%;
+  height: 150px;
+  border-radius: var(--border_radius_outer);
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  background: var(--foreground);
+  border: 3px solid var(--neutral_dark);
+  background: center url("https://firebasestorage.googleapis.com/v0/b/nous-news.appspot.com/o/assets%2Frecall_graphic.png?alt=media&token=c811ff38-b37b-401c-bb5f-1bf2e54d5e18");
+  background-size: cover;
+}
+
+.recall_text {
+  background: var(--neutral_dark);
+  border-bottom-left-radius: var(--border_radius_outer);
+  border-bottom-right-radius: var(--border_radius_outer);
+  padding: 1em;
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
