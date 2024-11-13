@@ -13,12 +13,11 @@ import { getStory, getNumDays, getUser, getUsername } from "@/firebase/helper";
 import { MessageCircle, ThumbsUp } from "lucide-react";
 import { CommentButton, LikeDiscussionButton } from "../Buttons/Discussion/DiscussionButtons";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 
 // DISCUSSION CARD LOADER COMPONENT
 function DiscussionCardLoader(
-    { discussion, isFullWidth = false, isPressable = true, isAdaptable = false }: 
-    { discussion?: Discussion, isFullWidth?: boolean, isPressable?: boolean, isAdaptable?: boolean }
+    { discussion, isFullWidth = false, isAdaptable = false }: 
+    { discussion?: Discussion, isFullWidth?: boolean, isAdaptable?: boolean }
 ) {
     return (
         <Link className={((isAdaptable) ? "adaptable_card": "")+((isFullWidth) ? "discussion_width_full ": "")}>
@@ -65,7 +64,7 @@ function DiscussionCardLoader(
                         </p>
                     }
                     <div className="discussion_reference_card">
-                        <StoryCardLoader isFullWidth={true} isPressable={!isPressable} />
+                        <StoryCardLoader isFullWidth={true} />
                     </div>
                 </CardBody>
                 <CardFooter className="gap-3 justify-between">

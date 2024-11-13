@@ -67,8 +67,8 @@ function StoryCard(
 
 // STORY CARD LOADER COMPONENT
 function StoryCardLoader(
-    { isFullWidth = false, isPressable = true, isAdaptable = true }: 
-    { isFullWidth?: boolean, isPressable?: boolean, isAdaptable?: boolean }
+    { isFullWidth = false, isAdaptable = true }: 
+    { isFullWidth?: boolean, isAdaptable?: boolean }
 ) {
     return (
         <Card

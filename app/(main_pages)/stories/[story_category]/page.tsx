@@ -10,7 +10,6 @@ import SideBar from "@/app/components/Navigation/SideBar";
 import ContentContainer from "@/app/components/Containers/ContentContainer";
 import StoriesContainer from "@/app/components/Containers/StoriesContainer";
 import CategoryNavBar from "@/app/components/Navigation/CategoryNavBar";
-import { where, orderBy, QueryFieldFilterConstraint, QueryOrderByConstraint, QueryLimitConstraint } from "@firebase/firestore";
 import { getAllCategories } from "@/firebase/helper";
 import { Filter } from "@/firebase/database_types";
 
