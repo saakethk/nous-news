@@ -8,10 +8,10 @@
 // IMPORTS
 import SideBar from "@/app/components/Navigation/SideBar";
 import ContentContainer from "@/app/components/Containers/ContentContainer";
-import DiscussionCard from "@/app/components/Cards/DiscussionCard";
 import RepliesContainer from "@/app/components/Containers/RepliesContainer";
 import { getComments, getDiscussion, getUser } from "@/firebase/helper";
 import { currentUser } from "@clerk/nextjs/server";
+import { DiscussionCard } from "@/app/components/Cards/DiscussionCard";
 
 // DISCUSSION PAGE
 export default async function DiscussionPage(

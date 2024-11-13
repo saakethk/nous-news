@@ -8,7 +8,7 @@
 // IMPORTS
 import { Story } from "@/firebase/database_types";
 import { getNumDays, formatTitle } from "@/firebase/helper";
-import { Card, CardBody, Image, CardFooter } from "@nextui-org/react";
+import { Card, CardBody, Image, CardFooter, Skeleton } from "@nextui-org/react";
 import { MessageCircle, ThumbsUp } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -41,7 +41,6 @@ function StoryCard(
                             width="100%"
                         />
                     </div>
-        
                     <div className="flex flex-col col-span-6 md:col-span-8 size-full w-size">
                         <div className="flex flex-col gap-0 basic_card_text">
                             <h1 className="text-large font-medium mt-2">
@@ -66,7 +65,53 @@ function StoryCard(
     )
 }
 
+// STORY CARD LOADER COMPONENT
+function StoryCardLoader(
+    { isFullWidth = false, isPressable = true, isAdaptable = true }: 
+    { isFullWidth?: boolean, isPressable?: boolean, isAdaptable?: boolean }
+) {
+    return (
+        <Card
+            isBlurred
+            className={"border-none basic_card "+((isFullWidth) ? "story_width_full ": "")+((isAdaptable) ? "adaptable_card": "")}
+            shadow="sm"
+        >
+            <CardBody>
+                <div className="grid grid-cols-6 md:grid-cols-12 gap-1 md:gap-4 items-center justify-center">
+                    <div className="relative col-span-6 md:col-span-4">
+                        <Skeleton className="object-cover rounded-lg loader">
+                            <div className="h-24 rounded-lg bg-default-300"></div>
+                        </Skeleton>
+                    </div>
+        
+                    <div className="flex flex-col col-span-6 md:col-span-8 size-full w-size">
+                        <div className="flex flex-col gap-2 basic_card_text">
+                            <Skeleton className="w-5/5 rounded-lg loader mt-1">
+                                <div className="h-3 w-3/5 rounded-lg bg-default-200"></div>
+                            </Skeleton>
+                            <Skeleton className="w-5/5 rounded-lg loader">
+                                <div className="h-3 w-3/5 rounded-lg bg-default-200"></div>
+                            </Skeleton>
+                            <Skeleton className="w-5/5 rounded-lg loader">
+                                <div className="h-3 w-3/5 rounded-lg bg-default-200"></div>
+                            </Skeleton>
+                        </div>
+                    </div>
+                </div>
+            </CardBody>
+            <CardFooter className="gap-3 justify-between py-2 border-t-2 border-black">
+                <Skeleton className="w-1/5 rounded-lg loader">
+                    <div className="h-3 w-3/5 rounded-lg bg-default-200"></div>
+                </Skeleton>
+                <Skeleton className="w-1/5 rounded-lg loader">
+                    <div className="h-3 w-3/5 rounded-lg bg-default-200"></div>
+                </Skeleton>
+            </CardFooter>
+        </Card>
+    )
+}
 
 export {
-    StoryCard
+    StoryCard,
+    StoryCardLoader
 }

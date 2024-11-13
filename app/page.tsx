@@ -1,4 +1,11 @@
 
+// AUTHOR: SAAKETH KESIREDDY
+// LAST EDIT: 11/12/24
+
+// TYPE
+"use server";
+
+// IMPORTS
 import SideBar from "@/app/components/Navigation/SideBar";
 import ContentContainer from "@/app/components/Containers/ContentContainer";
 import CardContainer from "@/app/components/Containers/CardContainer";
@@ -7,13 +14,30 @@ import { SnippetCard } from "./components/Cards/SnippetCard";
 import { StoryCard } from "./components/Cards/StoryCard";
 import { getAllSnippets, getAllStories, getUserFollowedStories, getUser } from "@/firebase/helper";
 import { currentUser } from "@clerk/nextjs/server";
+import { Filter, Story } from "@/firebase/database_types";
 
+// HOME PAGE
 export default async function Home() {
 
+    // Retrieves user
     const clerk_user = await currentUser();
     const user = await getUser(clerk_user!.id);
-    const stories = await getAllStories();
+
+    // Retrieves stories
+    const storyFilter: Filter = {
+        link: "new",
+        name: "New",
+        order: {
+            key: "date_added",
+            direction: "desc"
+        }
+    }
+    const stories = await getAllStories(storyFilter, {} as Story, 10);
+
+    // Retrieves snippets
     const snippets = await getAllSnippets();
+
+    // Retrieves stories followed by user
     const followed_stories = await getUserFollowedStories(user);
 
     return (

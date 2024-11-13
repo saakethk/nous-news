@@ -12,6 +12,7 @@ import StoriesContainer from "@/app/components/Containers/StoriesContainer";
 import CategoryNavBar from "@/app/components/Navigation/CategoryNavBar";
 import { where, orderBy, QueryFieldFilterConstraint, QueryOrderByConstraint, QueryLimitConstraint } from "@firebase/firestore";
 import { getAllCategories } from "@/firebase/helper";
+import { Filter } from "@/firebase/database_types";
 
 // STORIES PAGE
 export default async function StoriesPage(
@@ -27,27 +28,39 @@ export default async function StoriesPage(
     const relevantDate = new Date();
     relevantDate.setDate(relevantDate.getDate() - 1);
  
-     // Gets the filters associated with stories
-    const filters: { link: string, name: string, filters: (QueryFieldFilterConstraint | QueryOrderByConstraint | QueryLimitConstraint)[] }[] = [
+    // Gets the filters associated with stories
+    const filters: Filter[] = [
         {
             link: "most_liked",
             name: "Most Liked",
-            filters: [orderBy("likes", "desc")]
+            order: {
+                key: "likes",
+                direction: "desc"
+            }
         },
         {
             link: "most_discussed",
             name: "Most Discussed",
-            filters: [orderBy("num_discussions", "desc")]
+            order: {
+                key: "num_discussions",
+                direction: "desc"
+            }
         },
         {
             link: "new",
             name: "New",
-            filters: [orderBy("date_added", "desc")]
+            order: {
+                key: "date_added",
+                direction: "desc"
+            }
         },
         {
             link: "old",
             name: "Old",
-            filters: [orderBy("date_added")]
+            order: {
+                key: "date_added",
+                direction: "asc"
+            }
         }
     ];
 
@@ -58,20 +71,23 @@ export default async function StoriesPage(
             {
                 link: category.name,
                 name: category.name.charAt(0).toUpperCase() + category.name.slice(1),
-                filters: [orderBy("date_added", "desc"), where("category", "==", category.id)]
+                order: {
+                    key: "date_added",
+                    direction: "desc"
+                },
+                where_filter: category.id
             }
         )
     }
 
     // Chooses filters associated with story category chosen
-    const chosen_filters = filters[filters.findIndex((obj) => obj.link === story_category)].filters;
-
+    const chosen_filters = filters[filters.findIndex((obj) => obj.link === story_category)];
     return (
         <>
             <SideBar />
             <ContentContainer heading="Stories" hassearch={true} searchtype="stories">
                 <CategoryNavBar filters={filters} collection_name="stories" />
-                <StoriesContainer sort_by={chosen_filters} />
+                <StoriesContainer filter={JSON.parse(JSON.stringify(chosen_filters))} />
             </ContentContainer>
         </>
     )

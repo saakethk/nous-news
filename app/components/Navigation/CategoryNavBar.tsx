@@ -7,12 +7,12 @@
 
 // IMPORTS
 import { Link } from "@nextui-org/react";
-import { QueryFieldFilterConstraint, QueryOrderByConstraint, QueryLimitConstraint } from "@firebase/firestore";
+import { Filter } from "@/firebase/database_types";
 
 // CATEGORY NAV BAR COMPONENT
 export default async function CategoryNavBar(
     { filters, collection_name }: 
-    { filters: { link: string, name: string, filters: (QueryFieldFilterConstraint | QueryOrderByConstraint | QueryLimitConstraint)[] }[], collection_name: string }
+    { filters: Filter[], collection_name: string }
 ) {
     return (
         <div className="discussions_selection_header">

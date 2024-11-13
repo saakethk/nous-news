@@ -91,6 +91,18 @@ interface Comment {
     replies: Array<string>;
 }
 
+interface FilterObject {
+    key: string, 
+    direction: string
+}
+
+interface Filter { 
+    link: string;
+    name: string;
+    order: FilterObject;
+    where_filter?: string | Date
+}
+
 export type { 
     Story,
     Category,
@@ -99,5 +111,6 @@ export type {
     Snippet, 
     User, 
     Discussion, 
-    Comment 
+    Comment,
+    Filter
 };

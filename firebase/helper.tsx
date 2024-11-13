@@ -5,8 +5,8 @@
 // IMPORTS
 import ShortUniqueId from 'short-unique-id';
 import { db } from "./config";
-import { Story, Snippet, User, Source, Discussion, Comment, Category } from "./database_types";
-import { doc, setDoc, getDoc, Timestamp, getDocs, collection, query, QueryLimitConstraint, QueryFieldFilterConstraint, QueryOrderByConstraint } from "@firebase/firestore";
+import { Story, Snippet, User, Source, Discussion, Comment, Category, Filter } from "./database_types";
+import { doc, where, orderBy, limit, setDoc, getDoc, Timestamp, getDocs, collection, startAt, query, QueryLimitConstraint, QueryFieldFilterConstraint, QueryOrderByConstraint, startAfter, OrderByDirection, Query, WhereFilterOp, getCountFromServer } from "@firebase/firestore";
 
 // Generates unique id for creating objects
 function generateID() {
@@ -128,27 +128,73 @@ async function getAllSnippets() {
 
 }
 
-// Gets all snippets
-async function getAllStories(filters: (QueryFieldFilterConstraint | QueryOrderByConstraint | QueryLimitConstraint)[] = []) {
+// Get total number of documents in collection which meet criteria
+async function getNumDocuments(collection_given: string, parameter: string, operator: string, value: string | number | string[] | Timestamp) {
 
-    const stories: Story[] = [];
-    let storiesRef = query(collection(db, "stories"));
-    switch(filters.length) {
-        case 1: {
-            storiesRef = query(collection(db, "stories"), filters[0]);
-            break;
+    const collectionRef = collection(db, collection_given);
+    const documentsRef = query(collectionRef, where(parameter, operator as WhereFilterOp, value));
+    const snapshot = await getCountFromServer(documentsRef);
+    return snapshot.data().count
+
+}
+
+// Gets all snippets
+async function getAllStories(filters: Filter, cursor: Story , return_limit: number, where_filter: string | Date = "") {
+
+    // Defines collection reference and other essential vars
+    const storiesCollectionRef = collection(db, "stories");
+    const story_key: (keyof Story) = filters.order.key as keyof Story;
+    let storiesRef: Query;
+
+    if (where_filter != "") {
+        // Applies where filter if provided
+        if (cursor.title != undefined) {
+            // If there is a cursor defined
+            storiesRef = query(
+                storiesCollectionRef,
+                orderBy(story_key, filters.order.direction as OrderByDirection),
+                orderBy("id"),
+                where("category", "==", filters.where_filter),
+                startAfter(cursor[story_key], cursor["id"]),
+                limit(return_limit)
+            );
+        } else {
+            // Initial run if no cursor is defined
+            storiesRef = query(
+                storiesCollectionRef,
+                orderBy(story_key, filters.order.direction as OrderByDirection),
+                orderBy("id"),
+                where("category", "==", filters.where_filter),
+                limit(return_limit)
+            );
         }
-        case 2: {
-            storiesRef = query(collection(db, "stories"), filters[1]);
-            break;
-        }
-        case 3: {
-            storiesRef = query(collection(db, "stories"), filters[2]);
-            break;
+    } else {
+        // If where filter is not provided
+        if (cursor.title != undefined) {
+            // If there is a cursor defined
+            storiesRef = query(
+                storiesCollectionRef,
+                orderBy(story_key, filters.order.direction as OrderByDirection),
+                orderBy("id"),
+                startAfter(cursor[story_key], cursor["id"]),
+                limit(return_limit)
+            );
+        } else {
+            // Initial run if no cursor is defined
+            storiesRef = query(
+                storiesCollectionRef,
+                orderBy(story_key, filters.order.direction as OrderByDirection),
+                orderBy("id"),
+                limit(return_limit)
+            );
         }
     }
-    const querySnapshot = await getDocs(storiesRef);
 
+    // Retrieves stories
+    const querySnapshot = await getDocs(storiesRef);
+    
+    // Formats stories into local type
+    const stories: Story[] = [];
     querySnapshot.forEach((doc) => {
         stories.push(doc.data() as Story);
     });
@@ -462,30 +508,68 @@ async function getDiscussion(discussion_id: string) {
 }
 
 // Gets all discussions
-async function getAllDiscussions(filters: (QueryFieldFilterConstraint | QueryOrderByConstraint | QueryLimitConstraint)[] = []) {
+async function getAllDiscussions(filters: Filter, cursor: Discussion , return_limit: number, where_filter: string | Date = "") {
 
-    const discussions: Discussion[] = [];
-    let discussionsRef = query(collection(db, "discussions"));
-    switch(filters.length) {
-        case 1: {
-            discussionsRef = query(collection(db, "discussions"), filters[0]);
-            break;
+    // Defines collection reference and other essential vars
+    const discussionsCollectionRef = collection(db, "discussions");
+    const discussions_key: (keyof Discussion) = filters.order.key as keyof Discussion;
+    let discussionsRef: Query;
+
+    if (where_filter != "") {
+        // Applies where filter if provided
+        if (cursor.text != undefined) {
+            // If there is a cursor defined
+            discussionsRef = query(
+                discussionsCollectionRef,
+                orderBy(discussions_key, filters.order.direction as OrderByDirection),
+                orderBy("id"),
+                where("date_created", ">=", filters.where_filter),
+                startAfter(cursor[discussions_key], cursor["id"]),
+                limit(return_limit)
+            );
+        } else {
+            // Initial run if no cursor is defined
+            discussionsRef = query(
+                discussionsCollectionRef,
+                orderBy(discussions_key, filters.order.direction as OrderByDirection),
+                orderBy("id"),
+                where("date_created", ">=", filters.where_filter),
+                limit(return_limit)
+            );
         }
-        case 2: {
-            discussionsRef = query(collection(db, "discussions"), filters[1]);
-            break;
-        }
-        case 3: {
-            discussionsRef = query(collection(db, "discussions"), filters[2]);
-            break;
+    } else {
+        // If where filter is not provided
+        if (cursor.text != undefined) {
+            // If there is a cursor defined
+            discussionsRef = query(
+                discussionsCollectionRef,
+                orderBy(discussions_key, filters.order.direction as OrderByDirection),
+                orderBy("id"),
+                startAfter(cursor[discussions_key], cursor["id"]),
+                limit(return_limit)
+            );
+        } else {
+            // Initial run if no cursor is defined
+            discussionsRef = query(
+                discussionsCollectionRef,
+                orderBy(discussions_key, filters.order.direction as OrderByDirection),
+                orderBy("id"),
+                limit(return_limit)
+            );
         }
     }
-    const querySnapshot = await getDocs(discussionsRef);
 
+    // Retrieves stories
+    const querySnapshot = await getDocs(discussionsRef);
+    
+    // Formats stories into local type
+    const discussions: Discussion[] = [];
     querySnapshot.forEach((doc) => {
+        console.log(doc.data());
         discussions.push(doc.data() as Discussion);
     });
 
+    // Checks whether limit needs to be enacted or not
     return discussions;
 
 }
