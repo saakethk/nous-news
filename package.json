@@ -15,6 +15,8 @@
     "@firebase/app": "^0.10.15",
     "@firebase/firestore": "^4.7.4",
     "@nextui-org/react": "^2.4.8",
+    "@vercel/analytics": "^1.4.0",
+    "@vercel/speed-insights": "^1.1.0",
     "algoliasearch": "^5.12.0",
     "embla-carousel": "^8.3.0",
     "embla-carousel-react": "^8.3.0",
