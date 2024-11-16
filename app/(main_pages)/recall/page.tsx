@@ -41,15 +41,15 @@ export default async function Recall() {
         <>
             <SideBar />
             <ContentContainer heading="Recall">
-                <div className="recall_graphic_container">
+                {/* <div className="recall_graphic_container">
                     <div className="recall_graphic"/>
                     <div className="recall_text">
                         <p>
                             Browse your liked posts and stories alongside posts you made yourself so that you can recall any source accurately.
                         </p>
                     </div>
-                </div>
-                <hr/>
+                </div> */}
+                {/* <hr/> */}
                 <CardContainer heading="Your Comments" description="Comments you have made">
                     {comments_made.map((comment) => (
                         <CommentCard key={comment.id} user={user} comment={JSON.parse(JSON.stringify(comment))} />

@@ -9,8 +9,9 @@
 import { SourceButton, DiscussionButton, LikeStoryButton } from "../Buttons/Story/StoryButtons";
 import { Story, User, Snippet } from "@/firebase/database_types";
 import { convertTimestampToDate } from "@/firebase/helper";
-import { Button } from "@nextui-org/react";
-import { ArrowDown } from "lucide-react";
+import { Button, Slider } from "@nextui-org/react";
+import { ArrowDown, BadgeCheck } from "lucide-react";
+import { SnippetFeedbackCard } from "./SnippetCard";
 
 // SNIPPET EXPANDED CARD
 async function SnippetExpandedCard(
@@ -71,7 +72,24 @@ async function SnippetTitleCard(
     )
 }
 
+// SNIPPET TITLE CARD
+async function SnippetEndCard(
+    { snippet }: 
+    { snippet: Snippet }
+) {
+    return (
+        <div key="starter" className="snippet_card_expanded snippet_end_card_container">
+            <div className="snippet_end_card">
+                <BadgeCheck size={150} />
+                Thank you for reading this snippet!
+                <SnippetFeedbackCard snippet={JSON.parse(JSON.stringify(snippet))} />
+            </div>
+        </div>
+    )
+}
+
 export {
     SnippetTitleCard, 
-    SnippetExpandedCard
+    SnippetExpandedCard,
+    SnippetEndCard
 }

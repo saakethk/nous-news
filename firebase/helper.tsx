@@ -673,6 +673,35 @@ async function getReplies(reply_ids: Array<string>) {
 
 }
 
+// Adds feedback to a snippet
+async function sendFeedback(snippet: Snippet, rating: number) {
+
+    const snippetRef = doc(db, "snippets", snippet.id);
+    snippet.total_rating += rating;
+    snippet.num_ratings += 1;
+    
+    try {
+
+        await setDoc(snippetRef, snippet, { merge: true });
+
+        return {
+            success: true, 
+            id: snippet.id,
+            rating: rating
+        };
+
+    } catch (error) {
+
+        return {
+            success: false, 
+            id: snippet.id,
+            rating: rating
+        };
+
+    }
+
+}
+
 // Creates new discussion
 async function createComment(user: User, discussion: Discussion, text_content: string) {
     
@@ -810,5 +839,6 @@ export {
     getAllStories,
     getUserFollowedStories,
     formatTitle,
-    getDiscussions
+    getDiscussions,
+    sendFeedback
 }

@@ -455,15 +455,47 @@ a {
 
 /* Snippet */
 
+.total_snippet_card_container {
+  width: 100%;
+  height: 100%;
+  padding: 1em;
+}
+
 .snippet_card_container {
   overflow-y: auto;
   scroll-snap-type: y mandatory; 
   height: 100%;
-  margin-top: 1em;
-  padding: 1em;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   gap: 1em;
+}
+
+.snippet_end_card_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.snippet_end_card {
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.snippet_feedback_container {
+  padding: 1em;
+  width: fit-content;
+  border: 3px solid var(--neutral);
+  margin-top: 1em;
+  border-radius: var(--border_radius_inner);
+}
+
+.snippet_feedback_submit {
+  width: 100%;
+  margin-top: 1em;
 }
 
 .snippet_card_expanded {

@@ -6,9 +6,11 @@
 "use client";
 
 // IMPORTS
-import { Card, Image, CardFooter, Link} from "@nextui-org/react";
+import { Card, Image, CardFooter, Link, Slider, Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { Snippet } from "@/firebase/database_types";
+import { sendFeedback } from "@/firebase/helper";
+import { useState } from "react";
 
 // SNIPPET CARD
 function SnippetCard({ snippet }: { snippet: Snippet }) {
@@ -43,6 +45,66 @@ function SnippetCard({ snippet }: { snippet: Snippet }) {
     )
 }
 
+function SnippetFeedbackCard({ snippet }: { snippet: Snippet } ) {
+
+    // Stores the status of the slider
+    const [localRating, setLocalRating] = useState(0.5);
+    const [submitted, setSubmitted] = useState(false);
+
+    // Updates feedback of snippet
+    const handleClick = async () => {
+        const { success, rating } = await sendFeedback(snippet, localRating);
+        if (success) {
+            setLocalRating(rating);
+            setSubmitted(true);
+        }
+    } 
+
+    return (
+        <div className="snippet_feedback_container">
+            {
+                (!submitted) ?
+                <>
+                    <Slider 
+                    label="How satisfied were you with this snippet?" 
+                    showTooltip={true}
+                    step={0.1} 
+                    maxValue={1}
+                    minValue={0}
+                    hideValue={true}
+                    marks={[
+                        {
+                        value: 0.2,
+                        label: "20%",
+                        },
+                        {
+                        value: 0.5,
+                        label: "50%",
+                        },
+                        {
+                        value: 0.8,
+                        label: "80%",
+                        },
+                    ]}
+                    defaultValue={localRating}
+                    onChange={(e) => setLocalRating(e as number)}
+                    className="max-w-lg"
+                    />
+                    <Button variant="shadow" color="primary" className="snippet_feedback_submit" onClick={handleClick}>
+                        Submit
+                    </Button>
+                </>:
+                <>
+                    <div>
+                        Your feedback had been recorded.
+                    </div>
+                </>
+            }
+        </div>
+    )
+}
+
 export {
-    SnippetCard
+    SnippetCard,
+    SnippetFeedbackCard
 }

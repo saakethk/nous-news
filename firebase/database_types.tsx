@@ -67,6 +67,8 @@ interface Snippet {
     sources: Array<string>;
     stories: Array<string>;
     thumbnail: string;
+    num_ratings: number;
+    total_rating: number;
 }
 
 interface Discussion {

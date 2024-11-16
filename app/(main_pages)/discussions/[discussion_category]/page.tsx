@@ -83,7 +83,7 @@ export default async function DiscussionsPage(
     return (
         <>
             <SideBar />
-            <ContentContainer heading="Discussions">
+            <ContentContainer heading="Discussions" hassearch={true} searchtype="discussions">
                 <CategoryNavBar filters={filters} collection_name="discussions" />
                 <DiscussionsContainer user={user} filter={chosen_filter} />
             </ContentContainer>
