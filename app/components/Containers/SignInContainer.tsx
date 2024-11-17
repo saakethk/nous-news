@@ -10,8 +10,8 @@ import { NousLogo } from "../Other/Logos";
 
 // SIGN IN CONTAINER COMPONENT
 export default async function SignInContainer(
-    { children }: 
-    { children: React.ReactNode }
+    { children, new_user=false }: 
+    { children: React.ReactNode, new_user?: boolean }
 ) {
     return (
         <div className="sign_in_container">
@@ -24,9 +24,19 @@ export default async function SignInContainer(
                             Spread the truth.
                         </h1>
                         {children}
-                        <p className="disclaimer_text">
-                            By signing into Nous, you are agreeing to all terms of service and privacy policies.
-                        </p>
+                        {
+                            (new_user) ?
+                            <>
+                                <p className="disclaimer_text">
+                                    By creating a Nous account, you are agreeing to all <a href="/terms-of-service">terms of service</a> and <a href="/privacy-policy">privacy policies</a>. Already a user? <a href="/sign-in">Sign In</a>
+                                </p>
+                            </>:
+                            <>
+                                <p className="disclaimer_text">
+                                    Don't have an account? <a href="/sign-up">Sign Up</a>
+                                </p>
+                            </>
+                        }
                     </div>
                 </div>
             </div>

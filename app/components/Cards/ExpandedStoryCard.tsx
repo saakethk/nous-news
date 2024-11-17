@@ -9,7 +9,7 @@
 import { SourceButton, DiscussionButton, LikeStoryButton } from "../Buttons/Story/StoryButtons";
 import { Story, User, Snippet } from "@/firebase/database_types";
 import { convertTimestampToDate } from "@/firebase/helper";
-import { Button, Slider } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import { ArrowDown, BadgeCheck } from "lucide-react";
 import { SnippetFeedbackCard } from "./SnippetCard";
 

@@ -25,7 +25,7 @@ export default async function CommentCard(
         <Card className="comment_card">
             <CardHeader className="justify-between">
                 <div className="flex gap-5">
-                    <Avatar isBordered radius="full" size="sm" src={user.avatar} />
+                    <Avatar isBordered radius="full" size="sm" src={associated_user.avatar} />
                     <div className="flex flex-col gap-1 items-start justify-center">
                         <h4 className="text-small font-semibold leading-none text-default-100">
                             {associated_user.name}

@@ -728,7 +728,7 @@ a {
   background: var(--neutral_dark);
   border-radius: var(--border_radius_outer);
   width: 100%;
-  min-width: 400px;
+  min-width: 300px;
   height: fit-content;
   margin: auto;
   float: none;

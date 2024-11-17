@@ -17,14 +17,14 @@ export default async function SnippetContainer(
     return (
         <div className="total_snippet_card_container">
             <div className="snippet_card_container">
-                {/* <SnippetTitleCard snippet={JSON.parse(JSON.stringify(snippet))} />
+                <SnippetTitleCard snippet={JSON.parse(JSON.stringify(snippet))} />
                 {stories.map((story) => (
                     <SnippetExpandedCard 
                     key={story.id} 
                     user={JSON.parse(JSON.stringify(user))} 
                     story={JSON.parse(JSON.stringify(story))} 
                     />
-                ))} */}
+                ))}
                 <SnippetEndCard snippet={JSON.parse(JSON.stringify(snippet))} />
             </div>
         </div>

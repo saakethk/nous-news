@@ -8,13 +8,13 @@
 
 // IMPORTS
 import SignInContainer from "@/app/components/Containers/SignInContainer";
-import { SignInButton } from "@/app/components/Buttons/Auth/SignInButton";
+import { SignUpButton } from "@/app/components/Buttons/Auth/SignInButton";
 
 // SIGN IN PAGE
 export default async function SignInPage() {
     return (
-        <SignInContainer>
-            <SignInButton />
+        <SignInContainer new_user={true}>
+            <SignUpButton />
         </SignInContainer>
     )
 }
