@@ -6,6 +6,7 @@
 "use server";
 
 // IMPORTS
+import Link from "next/link";
 import { NousLogo } from "../Other/Logos";
 
 // SIGN IN CONTAINER COMPONENT
@@ -28,12 +29,12 @@ export default async function SignInContainer(
                             (new_user) ?
                             <>
                                 <p className="disclaimer_text">
-                                    By creating a Nous account, you are agreeing to all <a href="/terms-of-service">terms of service</a> and <a href="/privacy-policy">privacy policies</a>. Already a user? <a href="/sign-in">Sign In</a>
+                                    By creating a Nous account, you are agreeing to all <Link href="/terms-of-service">terms of service</Link> and <Link href="/privacy-policy">privacy policies</Link>. Already a user? <Link href="/sign-in">Sign In</Link>
                                 </p>
                             </>:
                             <>
                                 <p className="disclaimer_text">
-                                    Don't have an account? <a href="/sign-up">Sign Up</a>
+                                    Don't have an account? <Link href="/sign-up">Sign Up</Link>
                                 </p>
                             </>
                         }
