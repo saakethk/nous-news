@@ -43,8 +43,27 @@ export default async function Home() {
     return (
         <>
             <SideBar />
-            <ContentContainer heading="Home">
-                <StoryCarousel stories={JSON.parse(JSON.stringify(stories))} />
+            <ContentContainer heading={"Welcome "+user.name}>
+                {/* <StoryCarousel stories={JSON.parse(JSON.stringify(stories))} /> */}
+                <div className="snippet_card_graphic_container">
+                    <div className="snippet_card_graphic">
+                        <div className="">
+                            <span>
+                                <h1 className="heading">
+                                    Don't have time to browse?
+                                </h1>
+                                <p>
+                                    Read this daily snippet curated by our team. It has stories that cover a range of topics from finance to education.
+                                </p>
+                            </span>
+                        </div>
+                        <div className="">
+                            {snippets.map((snippet) => (
+                                <SnippetCard key={snippet.id} snippet={JSON.parse(JSON.stringify(snippet))} />
+                            ))}
+                        </div>
+                    </div>
+                </div>
                 <CardContainer heading="Snippets" description="Playlists of stories curated for you">
                     {snippets.map((snippet) => (
                         <SnippetCard key={snippet.id} snippet={JSON.parse(JSON.stringify(snippet))} />

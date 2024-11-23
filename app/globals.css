@@ -728,7 +728,7 @@ a {
   background: var(--neutral_dark);
   border-radius: var(--border_radius_outer);
   width: 100%;
-  min-width: 300px;
+  min-width: 360px;
   height: fit-content;
   margin: auto;
   float: none;
@@ -788,6 +788,7 @@ a {
 
 .source_follow_button {
   border-radius: var(--border_radius_outer);
+  margin-top: 1em;
 }
 
 .source_header_metadata {
@@ -954,6 +955,42 @@ a {
 }
 
 /* Recall */
+.recall_summary_container {
+  width: 100%;
+  height: fit-content;
+  padding: 1em;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+
+.recall_summary_item {
+  width: calc(33.33333% - 0.75em);
+  background: linear-gradient(45deg, var(--neutral_dark), var(--accent_secondary));
+  display: flex;
+  flex-direction: column;
+  border-radius: 1em;
+  padding: 1em;
+}
+
+.recall_summary_item > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.recall_summary_item_title {
+  font-size: 64px;
+  font-weight: bold;
+}
+
+.recall_summary_item_caption {
+  font-size: 16px;
+  color: var(--neutral_light);
+  font-weight: bold;
+}
+
 .recall_graphic_container {
   width: 100%;
   padding: 1em;
@@ -977,6 +1014,34 @@ a {
   border-bottom-left-radius: var(--border_radius_outer);
   border-bottom-right-radius: var(--border_radius_outer);
   padding: 1em;
+}
+
+/* Snippet Card Graphic */
+
+.snippet_card_graphic_container {
+  width: 100%;
+  padding: 1em;
+  padding-top: 0em;
+  padding-bottom: 0em;
+}
+
+.snippet_card_graphic {
+  width: 100%;
+  height: fit-content;
+  background: center url("https://firebasestorage.googleapis.com/v0/b/nous-news.appspot.com/o/assets%2Fhome_graphic.png?alt=media&token=11cc62a6-f45c-4591-8177-8ffd55620cca");
+  background-size: cover;
+  border-radius: var(--border_radius_outer);
+  padding: 1em;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.snippet_card_graphic > div {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
@@ -1030,6 +1095,16 @@ a {
 
   .trending_stories_grid {
     grid-template-columns: auto;
+  }
+
+  .recall_summary_item {
+    width: calc(50% - 0.5em);
+  }
+
+  .snippet_card_graphic > div {
+    width: 100%;
+    height: fit-content;
+    padding-bottom: 1em;
   }
 
 }

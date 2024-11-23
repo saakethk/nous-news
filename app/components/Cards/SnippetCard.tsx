@@ -9,7 +9,7 @@
 import { Card, Image, CardFooter, Link, Slider, Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { Snippet } from "@/firebase/database_types";
-import { sendFeedback } from "@/firebase/helper";
+import { getNumDays, sendFeedback } from "@/firebase/helper";
 import { useState } from "react";
 
 // SNIPPET CARD
@@ -35,7 +35,9 @@ function SnippetCard({ snippet }: { snippet: Snippet }) {
             />
             <CardFooter className="py-2 -my-1 justify-between overflow-hidden absolute before:rounded-xl bottom-1 w-[calc(100%)] shadow-small z-10">
                 <p className="text-tiny text-white/80">
-                    {snippet.title}
+                    <b>
+                        {getNumDays(snippet.date_created)}
+                    </b>
                 </p>
                 <Link className="text-tiny text-white/100 bg-black/50 hover:bg-black/80 rounded-lg px-3 py-1" href={"/snippets/"+snippet.id}>
                     Read

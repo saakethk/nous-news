@@ -9,11 +9,13 @@
 import SideBar from "@/app/components/Navigation/SideBar";
 import ContentContainer from "@/app/components/Containers/ContentContainer";
 import CardContainer from "@/app/components/Containers/CardContainer";
-import CommentCard from "@/app/components/Cards/CommentCard";
-import { getUser, getStories, getDiscussions, getComments } from "@/firebase/helper";
+import SourceCard from "@/app/components/Cards/SourceCard";
+import { CommentCard } from "@/app/components/Cards/CommentCard";
+import { getUser, getStories, getDiscussions, getComments, getSources } from "@/firebase/helper";
 import { currentUser } from "@clerk/nextjs/server";
 import { StoryCard } from "@/app/components/Cards/StoryCard";
 import { DiscussionCard } from "@/app/components/Cards/DiscussionCard";
+import { RecallSummaryContainer } from "@/app/components/Containers/RecallSummaryContainer";
 
 // RECALL PAGE
 export default async function Recall() {
@@ -37,19 +39,20 @@ export default async function Recall() {
     // Retrieves discussions made by user
     const discussions_made = await getDiscussions(user.discussed);
 
+    // Retrieves comments made by user
+    const sources_followed = await getSources(user.following);
+
     return (
         <>
             <SideBar />
             <ContentContainer heading="Recall">
-                {/* <div className="recall_graphic_container">
-                    <div className="recall_graphic"/>
-                    <div className="recall_text">
-                        <p>
-                            Browse your liked posts and stories alongside posts you made yourself so that you can recall any source accurately.
-                        </p>
-                    </div>
-                </div> */}
-                {/* <hr/> */}
+                <RecallSummaryContainer user={user} />
+                <hr/>
+                <CardContainer heading="Your Following" description="Sources you follow">
+                    {sources_followed.map((source) => (
+                        <SourceCard key={source.id} user={user} source={JSON.parse(JSON.stringify(source))} />
+                    ))}
+                </CardContainer>
                 <CardContainer heading="Your Comments" description="Comments you have made">
                     {comments_made.map((comment) => (
                         <CommentCard key={comment.id} user={user} comment={JSON.parse(JSON.stringify(comment))} />

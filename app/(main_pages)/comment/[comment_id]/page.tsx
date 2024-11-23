@@ -9,7 +9,7 @@
 import SideBar from "@/app/components/Navigation/SideBar";
 import ContentContainer from "@/app/components/Containers/ContentContainer";
 import RepliesContainer from "@/app/components/Containers/RepliesContainer";
-import CommentCard from "@/app/components/Cards/CommentCard";
+import { CommentCard } from "@/app/components/Cards/CommentCard";
 import { getUser, getComment, getReplies } from "@/firebase/helper";
 import { currentUser } from "@clerk/nextjs/server";
 import { ReturnButton } from "@/app/components/Buttons/Comment/CommentButtonsSSR";
@@ -38,9 +38,14 @@ export default async function CommentPage(
             <ContentContainer hasheader={false}>
                 <div className="comment_container">
                     <ReturnButton comment={JSON.parse(JSON.stringify(comment))} />
-                    <CommentCard comment={JSON.parse(JSON.stringify(comment))} user={JSON.parse(JSON.stringify(user))} />
+                    <CommentCard 
+                    comment={JSON.parse(JSON.stringify(comment))} 
+                    user={JSON.parse(JSON.stringify(user))} 
+                    clickable={false} />
                 </div>
-                <RepliesContainer replies={JSON.parse(JSON.stringify(replies))} user={JSON.parse(JSON.stringify(user))} />
+                <RepliesContainer 
+                replies={JSON.parse(JSON.stringify(replies))} 
+                user={JSON.parse(JSON.stringify(user))} />
             </ContentContainer>
         </>
     )

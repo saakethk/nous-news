@@ -261,6 +261,22 @@ async function getSource(source_id: string, get_stories: boolean = false) {
 
 }
 
+// Gets list of sources
+async function getSources(source_ids: string[]) {
+
+    const sources: Source[] = [];
+
+    for (const source_id of source_ids) {
+        const source: Source = (await getSource(source_id, false)).source;
+        if (source != undefined) {
+            sources.push(source);
+        }
+    }
+    
+    return sources;
+
+}
+
 // Gets all sources and if needed the associated stories
 async function getAllSources(get_stories: boolean = false) {
 
@@ -840,5 +856,6 @@ export {
     getUserFollowedStories,
     formatTitle,
     getDiscussions,
-    sendFeedback
+    sendFeedback,
+    getSources
 }

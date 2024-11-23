@@ -6,7 +6,7 @@
 "use server";
 
 // IMPORTS
-import CommentCard from "./CommentCard";
+import { CommentCard } from "./CommentCard";
 import { Comment, User } from "@/firebase/database_types";
 
 // REPLY CARD COMPONENT
