@@ -20,6 +20,7 @@ export default function ReplyModal(
     
     // Gets routing functions
     const router = useRouter();
+    const pathname = usePathname();
 
     // Stores states of text and status vars
     const [replyText, setReplyText] = useState("");
@@ -35,7 +36,7 @@ export default function ReplyModal(
     const resetHandler = async () => {
         setPosted(false);
         setReplyText("");
-        if (usePathname() == "/comment/"+comment.id) {
+        if ( pathname == "/comment/"+comment.id) {
             router.refresh();
         } else {
             router.push("/comment/"+comment.id);

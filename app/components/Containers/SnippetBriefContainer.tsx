@@ -37,8 +37,7 @@ export default function SnippetBriefContainer() {
     const handleClick = async () => {
 
         // Retrieves snippets with cursor
-        let snippets_retrieved;
-        snippets_retrieved = await getAllSnippets(snippets[snippets.length-1], num_preloaded)
+        const snippets_retrieved = await getAllSnippets(snippets[snippets.length-1], num_preloaded)
 
         // Checks that there are still snippets to be retrieved
         if (snippets_retrieved.length == 0) {
