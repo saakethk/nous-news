@@ -1,6 +1,16 @@
+# Nous News
 
-## NOUS
-Nous-News is an app that aims to prevent spread of information by emphasizing tracability.
+## What is it?
+I started this project as a way to develop my fullstack experience. The goal of Nous is to be a news-first social app. It should emphasize readers and traceablity. The purpos eof the app is to reduce the prevalence of the misinformation effect exascerbated by companies like X, Facebook, Instagram, ect.
 
-## Architecture
-The frontend is built using Next.js. The backend uses Firebase for backend function and database management.
+Website: https://www.itsnous.com/
+
+## Technologies
+ - HTML
+ - CSS
+ - Typescript
+ - React
+ - Next.js
+ - Firebase Functions
+ - Firebase Firestore
+ - Vercel Deployments
