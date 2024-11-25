@@ -3,14 +3,14 @@
 // LAST EDIT: 11/06/24
 
 // TYPE
-"use server";
+"use client";
 
 // IMPORTS
 import { Tooltip } from "@nextui-org/react";
 import { CircleAlert } from "lucide-react";
 
 // CARD CONTAINER COMPONENT
-export default async function CardContainer(
+export default function CardContainer(
     { heading, description, children }: 
     { heading: string, description: string, children: React.ReactNode }
 ) {

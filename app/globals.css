@@ -205,6 +205,12 @@ html, body {
 
 /* Card Container */
 
+.horizontal_preload_button_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .card_container {
   width: 100%;
   height: fit-content;
@@ -269,6 +275,7 @@ html, body {
 .snippet_card {
   background: var(--neutral_dark);
   width: fit-content;
+  min-width: 200px;
   height: fit-content;
   float: none;
   display: inline-block;

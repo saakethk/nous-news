@@ -6,11 +6,39 @@
 "use client";
 
 // IMPORTS
-import { Card, Image, CardFooter, Link, Slider, Button } from "@nextui-org/react";
+import { Card, Image, CardFooter, Link, Slider, Button, Skeleton } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { Snippet } from "@/firebase/database_types";
 import { getNumDays, sendFeedback } from "@/firebase/helper";
 import { useState } from "react";
+
+// SNIPPET CARD
+function SnippetCardLoader() {
+    return (
+        <Card
+        isPressable
+        isFooterBlurred
+        radius="lg"
+        className="border-none snippet_card"
+        >
+            <Skeleton className="rounded-lg loader">
+                <Image
+                    className="object-cover"
+                    height={200}
+                    width={200}
+                />
+            </Skeleton>
+            <CardFooter className="py-2 -my-1 justify-between overflow-hidden absolute before:rounded-xl bottom-1 w-[calc(100%)] shadow-small z-10 bg-black">
+                <Skeleton className="w-1/5 rounded-lg loader mt-1">
+                    <div className="h-3 w-3/5 rounded-lg bg-default-200"></div>
+                </Skeleton>
+                <Skeleton className="w-1/5 rounded-lg loader mt-1">
+                    <div className="h-3 w-3/5 rounded-lg bg-default-200"></div>
+                </Skeleton>
+            </CardFooter>
+        </Card>
+    )
+}
 
 // SNIPPET CARD
 function SnippetCard({ snippet }: { snippet: Snippet }) {
@@ -108,5 +136,6 @@ function SnippetFeedbackCard({ snippet }: { snippet: Snippet } ) {
 
 export {
     SnippetCard,
-    SnippetFeedbackCard
+    SnippetFeedbackCard,
+    SnippetCardLoader
 }

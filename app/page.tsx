@@ -9,12 +9,12 @@
 import SideBar from "@/app/components/Navigation/SideBar";
 import ContentContainer from "@/app/components/Containers/ContentContainer";
 import CardContainer from "@/app/components/Containers/CardContainer";
-import StoryCarousel from "./components/Other/StoryCarousel";
 import { SnippetCard } from "./components/Cards/SnippetCard";
 import { StoryCard } from "./components/Cards/StoryCard";
-import { getAllSnippets, getAllStories, getUserFollowedStories, getUser } from "@/firebase/helper";
+import { getAllSnippets, getUserFollowedStories, getUser } from "@/firebase/helper";
 import { currentUser } from "@clerk/nextjs/server";
-import { Filter, Story } from "@/firebase/database_types";
+import { Snippet } from "@/firebase/database_types";
+import SnippetBriefContainer from "./components/Containers/SnippetBriefContainer";
 
 // HOME PAGE
 export default async function Home() {
@@ -23,19 +23,8 @@ export default async function Home() {
     const clerk_user = await currentUser();
     const user = await getUser(clerk_user!.id);
 
-    // Retrieves stories
-    const storyFilter: Filter = {
-        link: "new",
-        name: "New",
-        order: {
-            key: "date_added",
-            direction: "desc"
-        }
-    }
-    const stories = await getAllStories(storyFilter, {} as Story, 10);
-
-    // Retrieves snippets
-    const snippets = await getAllSnippets();
+    // Retrieves current snippet
+    const snippet = await getAllSnippets({} as Snippet, 1);
 
     // Retrieves stories followed by user
     const followed_stories = await getUserFollowedStories(user);
@@ -44,10 +33,9 @@ export default async function Home() {
         <>
             <SideBar />
             <ContentContainer heading={"Welcome "+user.name}>
-                {/* <StoryCarousel stories={JSON.parse(JSON.stringify(stories))} /> */}
                 <div className="snippet_card_graphic_container">
                     <div className="snippet_card_graphic">
-                        <div className="">
+                        <div>
                             <span>
                                 <h1 className="heading">
                                     Don't have time to browse?
@@ -57,18 +45,12 @@ export default async function Home() {
                                 </p>
                             </span>
                         </div>
-                        <div className="">
-                            {snippets.map((snippet) => (
-                                <SnippetCard key={snippet.id} snippet={JSON.parse(JSON.stringify(snippet))} />
-                            ))}
+                        <div>
+                            <SnippetCard snippet={snippet[0]} />
                         </div>
                     </div>
                 </div>
-                <CardContainer heading="Snippets" description="Playlists of stories curated for you">
-                    {snippets.map((snippet) => (
-                        <SnippetCard key={snippet.id} snippet={JSON.parse(JSON.stringify(snippet))} />
-                    ))}
-                </CardContainer>
+                <SnippetBriefContainer />
                 <CardContainer heading="Following" description="Recent stories from sources you follow">
                     {followed_stories.map((story) => (
                         <StoryCard key={story.id} story={JSON.parse(JSON.stringify(story))} isAdaptable={false} />

@@ -6,7 +6,7 @@
 import ShortUniqueId from 'short-unique-id';
 import { db } from "./config";
 import { Story, Snippet, User, Source, Discussion, Comment, Category, Filter } from "./database_types";
-import { doc, where, orderBy, limit, setDoc, getDoc, Timestamp, getDocs, collection, startAt, query, QueryLimitConstraint, QueryFieldFilterConstraint, QueryOrderByConstraint, startAfter, OrderByDirection, Query, WhereFilterOp, getCountFromServer } from "@firebase/firestore";
+import { doc, where, orderBy, limit, setDoc, getDoc, Timestamp, getDocs, collection, query, startAfter, OrderByDirection, Query, WhereFilterOp, getCountFromServer } from "@firebase/firestore";
 
 // Generates unique id for creating objects
 function generateID() {
@@ -132,12 +132,35 @@ async function getSnippet(snippet_id: string) {
 }
 
 // Gets all snippets
-async function getAllSnippets() {
+async function getAllSnippets(cursor: Snippet, return_limit: number) {
 
-    const snippets: Snippet[] = [];
-    const snippetsRef = collection(db, "snippets");
+    // Creates snippet collection reference
+    const snippetsCollectionRef = collection(db, "snippets");
+    let snippetsRef: Query;
+
+    // Defines query based on cursor
+    if (cursor.title == undefined) {
+        snippetsRef = query(
+            snippetsCollectionRef,
+            orderBy("date_created", "desc"),
+            orderBy("id"),
+            limit(return_limit)
+        );
+    } else {
+        snippetsRef = query(
+            snippetsCollectionRef,
+            orderBy("date_created", "desc"),
+            orderBy("id"),
+            startAfter(cursor.date_created, cursor["id"]),
+            limit(return_limit)
+        );
+    }
+
+    // Retrieves snippets
     const querySnapshot = await getDocs(snippetsRef);
 
+    // Converts data to snippet type
+    const snippets: Snippet[] = [];
     querySnapshot.forEach((doc) => {
         snippets.push(doc.data() as Snippet);
     });
