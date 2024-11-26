@@ -10,7 +10,11 @@ import { Card, CardBody, Image, Link } from "@nextui-org/react";
 import { FollowSourceButton } from "../Buttons/Source/SourceButtons";
 import { Source, User } from "@/firebase/database_types";
 
-export default function SourceCard({user, source}: {user: User, source: Source}) {
+// SOURCE CARD COMPONENT
+export default function SourceCard(
+    {user, source}: 
+    {user: User, source: Source}
+) {
     return (
         <Card
             isBlurred
@@ -31,7 +35,7 @@ export default function SourceCard({user, source}: {user: User, source: Source})
                     </div>
                     <div className="flex flex-col col-span-6 md:col-span-8">
                         <div className="flex flex-col gap-0 basic_card_text">
-                            <Link href={"/sources/"+source.id}>
+                            <Link href={"/source/"+source.id}>
                                 <h1 className="text-large font-medium mt-2 text-white/100 font-bold">{source.name}</h1>
                             </Link>
                             <p className="font-medium text-small text-foreground/80">{source.follows} followers ({source.num_stories} stories)</p>

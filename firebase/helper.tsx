@@ -131,6 +131,22 @@ async function getSnippet(snippet_id: string) {
 
 }
 
+// Gets multiple snippets
+async function getSnippets(snippet_ids: string[]) {
+
+    const snippets: Snippet[] = [];
+
+    for (const snippet_id of snippet_ids) {
+        const snippet: Snippet = await getSnippet(snippet_id);
+        if (snippet != undefined) {
+            snippets.push(snippet);
+        }
+    }
+    
+    return snippets;
+
+}
+
 // Gets all snippets
 async function getAllSnippets(cursor: Snippet, return_limit: number) {
 
@@ -741,6 +757,29 @@ async function sendFeedback(snippet: Snippet, rating: number) {
 
 }
 
+// Updates user last login
+async function updateUser(user: User) {
+
+    const userRef = doc(db, "users", user.id);
+
+    try {
+
+        await setDoc(userRef, { last_login: Timestamp.fromDate(new Date()) }, { merge: true });
+
+        return {
+            success: true, 
+            user: user
+        };
+
+    } catch (error) {
+        return {
+            success: false, 
+            user: {} as User
+        };
+
+    }
+}
+
 // Creates new discussion
 async function createComment(user: User, discussion: Discussion, text_content: string) {
     
@@ -880,5 +919,7 @@ export {
     formatTitle,
     getDiscussions,
     sendFeedback,
-    getSources
+    getSources,
+    getSnippets,
+    updateUser
 }

@@ -8,9 +8,8 @@
 // IMPORTS
 import SideBar from "@/app/components/Navigation/SideBar";
 import ContentContainer from "@/app/components/Containers/ContentContainer";
-import CardContainer from "@/app/components/Containers/CardContainer";
+import CardPaginatedContainer from "@/app/components/Containers/CardPaginatedContainer";
 import SourceHeader from "@/app/components/Other/SourceHeader";
-import { StoryCard } from "@/app/components/Cards/StoryCard";
 import { getSource, getUser } from "@/firebase/helper";
 import { currentUser } from "@clerk/nextjs/server";
 
@@ -29,7 +28,7 @@ export default async function NewsSources(
     const user = await getUser(clerk_user!.id);
 
     // Gets snippet and its stories
-    const { source, stories } = await getSource(source_id, true);
+    const { source } = await getSource(source_id, false);
 
     return (
         <>
@@ -39,11 +38,7 @@ export default async function NewsSources(
                 user={JSON.parse(JSON.stringify(user))} 
                 source={JSON.parse(JSON.stringify(source))} 
                 />
-                <CardContainer heading="All Stories" description={"All Stories posted by "+source.name}>
-                    {stories.map((story) => (
-                        <StoryCard key={story.id} story={JSON.parse(JSON.stringify(story))} />
-                    ))}
-                </CardContainer> 
+                <CardPaginatedContainer heading="All Stories" description={"All Stories posted by "+source.name} ids={source.stories} type="stories" user={user} />
             </ContentContainer>
         </>
     )

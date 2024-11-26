@@ -9,12 +9,12 @@
 import SideBar from "@/app/components/Navigation/SideBar";
 import ContentContainer from "@/app/components/Containers/ContentContainer";
 import CardContainer from "@/app/components/Containers/CardContainer";
+import SnippetBriefContainer from "./components/Containers/SnippetBriefContainer";
 import { SnippetCard } from "./components/Cards/SnippetCard";
 import { StoryCard } from "./components/Cards/StoryCard";
-import { getAllSnippets, getUserFollowedStories, getUser } from "@/firebase/helper";
+import { getAllSnippets, getUserFollowedStories, getUser, updateUser } from "@/firebase/helper";
 import { currentUser } from "@clerk/nextjs/server";
 import { Snippet } from "@/firebase/database_types";
-import SnippetBriefContainer from "./components/Containers/SnippetBriefContainer";
 
 // HOME PAGE
 export default async function Home() {
@@ -22,6 +22,7 @@ export default async function Home() {
     // Retrieves user
     const clerk_user = await currentUser();
     const user = await getUser(clerk_user!.id);
+    updateUser(user);
 
     // Retrieves current snippet
     const snippet = await getAllSnippets({} as Snippet, 1);
