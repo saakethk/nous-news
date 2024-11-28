@@ -52,6 +52,15 @@ function getNumDays(timestamp: Timestamp) {
 
 }
 
+// Cuts text given cutoff
+function truncateText(text: string, cutoff: number = 0) {
+    if (text.length > cutoff){
+        return text.substring(0, cutoff) + "...";
+    } else {
+        return text
+    }
+}
+
 // Gets phrase with cutoff defined
 function formatTitle(headline: string, cutoff: number = 0) {
 
@@ -921,5 +930,6 @@ export {
     sendFeedback,
     getSources,
     getSnippets,
-    updateUser
+    updateUser,
+    truncateText
 }

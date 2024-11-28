@@ -9,7 +9,7 @@
 import { Link } from "@nextui-org/react";
 import { ArrowRight } from "lucide-react";
 import { Story } from "@/firebase/database_types";
-import { getSource } from "@/firebase/helper";
+import { getSource, truncateText } from "@/firebase/helper";
 
 // RELATED STORIES SOURCE BUTTON - Links to nous account page of source
 async function RelatedStoriesSourceButton({ story }: { story: Story }) {
@@ -19,7 +19,7 @@ async function RelatedStoriesSourceButton({ story }: { story: Story }) {
 
   return (
       <Link className="story_text_metadata_item" href={"/source/"+source.id}>
-          {source.name} &nbsp; <ArrowRight />
+          {truncateText(source.name, 8)} &nbsp; <ArrowRight />
       </Link>
   )
 }
