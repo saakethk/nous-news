@@ -41,7 +41,7 @@ function CardContainerContent(
             const filtered_ids = ids.slice(cursor, cursor+num_preloaded);
             setCursor(cursor+num_preloaded);
 
-            if (ids.length <= filtered_ids.length) {
+            if (filtered_ids.length < num_preloaded) {
                 setCompleted(true);
             }
 

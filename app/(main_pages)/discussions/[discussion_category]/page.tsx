@@ -85,7 +85,7 @@ export default async function DiscussionsPage(
             <SideBar />
             <ContentContainer heading="Discussions" hassearch={true} searchtype="discussions">
                 <CategoryNavBar filters={filters} collection_name="discussions" />
-                <DiscussionsContainer user={user} filter={chosen_filter} />
+                <DiscussionsContainer user={JSON.parse(JSON.stringify(user))} filter={chosen_filter} />
             </ContentContainer>
         </>
     )

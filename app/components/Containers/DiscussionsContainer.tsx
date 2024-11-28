@@ -24,6 +24,7 @@ export default function DiscussionsContainer(
     const [discussions, setDiscussions] = useState([] as Discussion[]);
     const [isLoading, setIsLoading] = useState(true);
     const [completed, setCompleted] = useState(false);
+    const [isEmpty, setIsEmpty] = useState(false);
 
     // On initial load, this sets defaults
     useEffect(() => {
@@ -34,7 +35,11 @@ export default function DiscussionsContainer(
             } else {
                 discussions_retrieved = await getAllDiscussions(filter, {} as Discussion, num_preloaded, filter.where_filter);
             }
-            setDiscussions(discussions_retrieved)
+            if (discussions_retrieved.length == 0) {
+                setIsEmpty(true);
+            } else {
+                setDiscussions(discussions_retrieved);
+            }
             setIsLoading(false);
         })();
     }, [])
@@ -60,28 +65,42 @@ export default function DiscussionsContainer(
         <>
             <div className="discussions_extended_container">
                 {
-                    (!isLoading) ?
+                    (!isEmpty) ?
                     <>
-                        {discussions.map((discussion) => (
-                            <DiscussionCard key={discussion.id} current_user={user} discussion={JSON.parse(JSON.stringify(discussion))} isAdaptable={true} />
-                        ))}
+                        {
+                            (!isLoading) ?
+                            <>
+                                {discussions.map((discussion) => (
+                                    <DiscussionCard key={discussion.id} current_user={JSON.parse(JSON.stringify(user))} discussion={JSON.parse(JSON.stringify(discussion))} isAdaptable={true} />
+                                ))}
+                            </>:
+                            <>
+                                {[...Array(num_preloaded).keys()].map((preload_id) => (
+                                    <DiscussionCardLoader key={preload_id} isAdaptable={true} />
+                                ))}
+                            </>
+                        }
                     </>:
-                    <>
-                        {[...Array(num_preloaded).keys()].map((preload_id) => (
-                            <DiscussionCardLoader key={preload_id} isAdaptable={true} />
-                        ))}
-                    </>
+                    <div className="empty_results_container">
+                        There are currently no stories for "{filter.name}".
+                    </div>
                 }
             </div>
             <div className="flex">
                 {
-                    (!completed) ?
-                    <Button endContent={<ChevronDown/>} className="pagination_button" onClick={handleClick}>
-                        View More
-                    </Button>:
-                    <Button endContent={<PartyPopper/>} className="pagination_button">
-                        You've reached the end
-                    </Button>
+                    (!isEmpty) ?
+                    <>
+                        {
+                            (!completed) ?
+                            <Button endContent={<ChevronDown/>} className="pagination_button" onClick={handleClick}>
+                                View More
+                            </Button>:
+                            <Button endContent={<PartyPopper/>} className="pagination_button">
+                                You've reached the end
+                            </Button>
+                        }
+                    </>:
+                    <></>
                 }
             </div>
         </>

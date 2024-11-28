@@ -24,6 +24,7 @@ export default function StoriesContainer(
     const [stories, setStories] = useState([] as Story[]);
     const [isLoading, setIsLoading] = useState(true);
     const [completed, setCompleted] = useState(false);
+    const [isEmpty, setIsEmpty] = useState(false);
 
     // On initial load, this sets defaults
     useEffect(() => {
@@ -34,7 +35,11 @@ export default function StoriesContainer(
             } else {
                 stories_retrieved = await getAllStories(filter, {} as Story, num_preloaded, filter.where_filter);
             }
-            setStories(stories_retrieved);
+            if (stories_retrieved.length == 0) {
+                setIsEmpty(true);
+            } else {
+                setStories(stories_retrieved);
+            }
             setIsLoading(false);
         })();
     }, [])
@@ -60,28 +65,42 @@ export default function StoriesContainer(
         <>
             <div className="discussions_extended_container">
                 {
-                    (!isLoading) ?
+                    (!isEmpty) ?
                     <>
-                        {stories.map((story) => (
-                            <StoryCard key={story.id} story={JSON.parse(JSON.stringify(story))} />
-                        ))}
+                        {
+                            (!isLoading) ?
+                            <>
+                                {stories.map((story) => (
+                                    <StoryCard key={story.id} story={JSON.parse(JSON.stringify(story))} />
+                                ))}
+                            </>:
+                            <>
+                                {[...Array(num_preloaded).keys()].map((preload_id) => (
+                                    <StoryCardLoader key={preload_id} />
+                                ))}
+                            </>
+                        }
                     </>:
-                    <>
-                        {[...Array(num_preloaded).keys()].map((preload_id) => (
-                            <StoryCardLoader key={preload_id} />
-                        ))}
-                    </>
+                    <div className="empty_results_container">
+                        There are currently no stories for "{filter.name}".
+                    </div>
                 }
             </div>
             <div className="flex">
                 {
-                    (!completed) ?
-                    <Button endContent={<ChevronDown/>} className="pagination_button" onClick={handleClick}>
-                        View More
-                    </Button>:
-                    <Button endContent={<PartyPopper/>} className="pagination_button">
-                        You've reached the end
-                    </Button>
+                    (!isEmpty) ?
+                    <>
+                        {
+                            (!completed) ?
+                            <Button endContent={<ChevronDown/>} className="pagination_button" onClick={handleClick}>
+                                View More
+                            </Button>:
+                            <Button endContent={<PartyPopper/>} className="pagination_button">
+                                You've reached the end
+                            </Button>
+                        }
+                    </>:
+                    <></>
                 }
             </div>
         </>

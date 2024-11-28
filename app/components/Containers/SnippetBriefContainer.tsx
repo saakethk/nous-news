@@ -28,6 +28,10 @@ export default function SnippetBriefContainer() {
         (async () => {
             // Gets snippets
             const stuff: Snippet[] = await getAllSnippets({} as Snippet, num_preloaded);
+
+            if (stuff.length < num_preloaded) {
+                setCompleted(true)
+            }
             setSnippets(stuff);
             setIsLoading(false);
         })();

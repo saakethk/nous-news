@@ -226,6 +226,13 @@ html, body {
   padding: 1em;
 }
 
+.empty_results_container {
+  width: 100%;
+  padding: 1em;
+  border-radius: var(--border_radius_outer);
+  background: var(--neutral_dark);
+}
+
 .card_container_content_container {
   overflow-x: scroll;
 }

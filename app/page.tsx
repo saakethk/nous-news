@@ -47,7 +47,7 @@ export default async function Home() {
                             </span>
                         </div>
                         <div>
-                            <SnippetCard snippet={snippet[0]} />
+                            <SnippetCard snippet={JSON.parse(JSON.stringify(snippet[0]))} />
                         </div>
                     </div>
                 </div>

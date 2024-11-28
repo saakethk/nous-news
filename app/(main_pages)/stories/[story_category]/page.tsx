@@ -30,6 +30,15 @@ export default async function StoriesPage(
     // Gets the filters associated with stories
     const filters: Filter[] = [
         {
+            link: "trending",
+            name: "Trending",
+            order: {
+                key: "likes",
+                direction: "desc"
+            },
+            where_filter: relevantDate
+        },
+        {
             link: "most_liked",
             name: "Most Liked",
             order: {

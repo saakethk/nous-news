@@ -24,7 +24,7 @@ export default async function Recall() {
         <>
             <SideBar />
             <ContentContainer heading="Recall">
-                <RecallSummaryContainer user={user} />
+                <RecallSummaryContainer user={JSON.parse(JSON.stringify(user))} />
                 <hr/>
                 <CardPaginatedContainer heading="Your Following" description="Sources you follow" ids={user.following} type="sources" user={user} />
                 <CardPaginatedContainer heading="Your Comments" description="Comments you have made" ids={user.comments} type="comments" user={user} />
