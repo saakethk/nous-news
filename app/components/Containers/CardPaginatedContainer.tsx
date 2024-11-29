@@ -20,8 +20,8 @@ import { Button } from "@nextui-org/react";
 import { ChevronRight } from "lucide-react";
 
 function CardContainerContent(
-    { ids, type, user }:
-    { ids: Array<string>, type: string, user: User}
+    { ids, type, user, description }:
+    { ids: Array<string>, type: string, user: User, description: string}
 ) {
 
     // Determines number of items to preload
@@ -32,6 +32,7 @@ function CardContainerContent(
     const [cursor, setCursor] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [completed, setCompleted] = useState(false);
+    const [isEmpty, setIsEmpty] = useState(false);
 
     // On initial load, this sets defaults
     useEffect(() => {
@@ -41,7 +42,9 @@ function CardContainerContent(
             const filtered_ids = ids.slice(cursor, cursor+num_preloaded);
             setCursor(cursor+num_preloaded);
 
-            if (filtered_ids.length < num_preloaded) {
+            if (filtered_ids.length == 0) {
+                setIsEmpty(true);
+            } else if (filtered_ids.length < num_preloaded) {
                 setCompleted(true);
             }
 
@@ -68,6 +71,7 @@ function CardContainerContent(
                     break;
                 }
             }
+            
             setIsLoading(false);
         })();
     }, [])
@@ -116,7 +120,13 @@ function CardContainerContent(
         }
     };
 
-    if (!isLoading) {
+    if (isEmpty) {
+        return (
+            <div className="card_container_empty_message">
+                There are currently no {type} for "{description}"
+            </div>
+        )
+    } else if (!isLoading) {
         switch (type) {
             case "snippets": {
                 return (
@@ -294,7 +304,7 @@ export default function CardPaginatedContainer(
             </div>
             <div className="card_container_content_container">
                 <div className="card_container_content">
-                    <CardContainerContent ids={ids} type={type} user={user} />
+                    <CardContainerContent ids={ids} type={type} user={JSON.parse(JSON.stringify(user))} description={description} />
                 </div>
             </div>
         </div>

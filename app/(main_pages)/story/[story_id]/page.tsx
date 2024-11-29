@@ -9,6 +9,7 @@
 import SideBar from "@/app/components/Navigation/SideBar";
 import ContentContainer from "@/app/components/Containers/ContentContainer";
 import CardContainer from "@/app/components/Containers/CardContainer";
+import CardPaginatedContainer from "@/app/components/Containers/CardPaginatedContainer";
 import { StoryCard } from "@/app/components/Cards/StoryCard";
 import { LikeStoryButton, DiscussionButton } from "@/app/components/Buttons/Story/StoryButtons";
 import { RelatedStoriesSourceButton } from "@/app/components/Buttons/Story/StoryButtonsSSR";
@@ -52,6 +53,7 @@ export default async function StoryPage(
                     <SourceButton story={JSON.parse(JSON.stringify(story))} />
                     <RelatedStoriesSourceButton story={JSON.parse(JSON.stringify(story))} />
                 </div>
+                <CardPaginatedContainer heading="Discussions" description="Discussions about this story" ids={story.discussions} type="discussions" user={JSON.parse(JSON.stringify(user))} />
                 <CardContainer heading="Related Stories" description="Stories related to this news article">
                     {related_stories.map((story) => (
                         <StoryCard key={story.id} story={JSON.parse(JSON.stringify(story))} isAdaptable={false} />

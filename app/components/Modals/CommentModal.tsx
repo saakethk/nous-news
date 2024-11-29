@@ -4,12 +4,13 @@
 import { useState } from "react";
 import { Discussion, User } from "@/firebase/database_types";
 import { createComment } from "@/firebase/helper";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { PostModal, SuccessModal } from "./PostModal";
 
 export default function CommentModal({ user, discussion, isOpen, onOpenChange}: {user: User, discussion: Discussion, isOpen: boolean, onOpenChange: (isOpen: boolean) => void }) {
     
     const router = useRouter();
+    const pathname = usePathname();
     const [commentText, setCommentText] = useState("");
     const [posted, setPosted] = useState(false);
 
@@ -21,7 +22,11 @@ export default function CommentModal({ user, discussion, isOpen, onOpenChange}: 
     const resetHandler = () => {
         setPosted(false);
         setCommentText("");
-        router.refresh();
+        if (pathname == "/discussion/"+discussion.id) {
+            router.refresh();
+        } else {
+            router.push("/discussion/"+discussion.id);
+        }
     };
      
     if (posted) {

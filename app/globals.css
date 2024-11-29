@@ -249,6 +249,13 @@ html, body {
   background: var(--neutral_dark);
 }
 
+.card_container_empty_message {
+  padding: 1em;
+  background: var(--neutral_dark);
+  width: fit-content;
+  border-radius: var(--border_radius_outer);
+}
+
 .card_container_heading {
   color: white;
   font-weight: bold;
@@ -1091,8 +1098,46 @@ ul li {
   margin: 5px;
 }
 
+/* Not Found */
+
+.not_found_container {
+  background: var(--background);
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1em;
+}
+
+.not_found_content {
+  background: var(--neutral_dark);
+  border-radius: var(--border_radius_outer);
+  padding: 1em;
+  width: 50%;
+}
+
+.not_found_heading {
+  padding: 1em;
+}
+
+.not_found_accordian {
+  margin-top: 1em;
+  background: var(--neutral);
+}
+
+.not_found_button {
+  margin-top: 1em;
+  font-weight: bold;
+}
+
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (max-width: 768px) {
+
+  .not_found_content {
+    width: 100%;
+  }
+
   .sidebar_vertical {
     display: none;
   }

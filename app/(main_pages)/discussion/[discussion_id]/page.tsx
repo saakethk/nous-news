@@ -36,7 +36,7 @@ export default async function DiscussionPage(
             <SideBar />
             <ContentContainer hasheader={false}>
                 <div className="discussion_card_container">
-                    <DiscussionCard current_user={user} discussion={JSON.parse(JSON.stringify(discussion))} isFullWidth={true} isPressable={false} />
+                    <DiscussionCard current_user={JSON.parse(JSON.stringify(user))} discussion={JSON.parse(JSON.stringify(discussion))} isFullWidth={true} isPressable={false} />
                 </div>
                 <RepliesContainer replies={JSON.parse(JSON.stringify(comments))} user={JSON.parse(JSON.stringify(user))} />
             </ContentContainer>

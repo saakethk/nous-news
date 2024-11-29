@@ -52,11 +52,15 @@ export default async function Home() {
                     </div>
                 </div>
                 <SnippetBriefContainer />
-                <CardContainer heading="Following" description="Recent stories from sources you follow">
-                    {followed_stories.map((story) => (
-                        <StoryCard key={story.id} story={JSON.parse(JSON.stringify(story))} isAdaptable={false} />
-                    ))}
-                </CardContainer>
+                {
+                        (followed_stories.length != 0) ?
+                        <CardContainer heading="Following" description="Recent stories from sources you follow">
+                            {followed_stories.map((story) => (
+                                <StoryCard key={story.id} story={JSON.parse(JSON.stringify(story))} isAdaptable={false} />
+                            ))}
+                        </CardContainer>:
+                        <></>
+                }
             </ContentContainer>
         </>
     )

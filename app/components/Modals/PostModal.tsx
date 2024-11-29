@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Textarea, ButtonGroup } from "@nextui-org/react";
-import { Send, X, RefreshCcw } from "lucide-react";
+import { Send, X, ArrowUpRight } from "lucide-react";
 
 function SuccessModal({ title, success_message, post_text, isOpen, onOpenChange, reset }: { title: string, success_message: string, post_text: string, isOpen: boolean, onOpenChange: (isOpen: boolean) => void, reset: () => void }) {
     return (
@@ -23,8 +23,8 @@ function SuccessModal({ title, success_message, post_text, isOpen, onOpenChange,
                         />
                     </ModalBody>
                     <ModalFooter>
-                        <Button variant="solid" color="primary" onPress={() => {reset();onClose();}} endContent={<RefreshCcw />}>
-                            Reload
+                        <Button variant="solid" color="primary" onPress={() => {reset();onClose();}} endContent={<ArrowUpRight />}>
+                            View
                         </Button>
                     </ModalFooter>
                 </>)}

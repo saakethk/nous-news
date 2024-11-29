@@ -75,17 +75,19 @@ export default async function StoriesPage(
     // Adds category filters
     const categories = await getAllCategories();
     for (const category of categories.categories) {
-        filters.unshift(
-            {
-                link: category.name,
-                name: category.name.charAt(0).toUpperCase() + category.name.slice(1),
-                order: {
-                    key: "date_added",
-                    direction: "desc"
-                },
-                where_filter: category.id
-            }
-        )
+        if (category.stories.length != 0) {
+            filters.unshift(
+                {
+                    link: category.name,
+                    name: category.name.charAt(0).toUpperCase() + category.name.slice(1),
+                    order: {
+                        key: "date_added",
+                        direction: "desc"
+                    },
+                    where_filter: category.id
+                }
+            )
+        }
     }
 
     // Chooses filters associated with story category chosen

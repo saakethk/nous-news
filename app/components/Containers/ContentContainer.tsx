@@ -36,7 +36,7 @@ export default async function ContentContainer(
                                 </Link>:
                                 <></>
                             }
-                            <UserButton/>
+                            <UserButton />
                         </div>
                     </div>
                     <div className="content_container_content">

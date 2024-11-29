@@ -26,13 +26,13 @@ export default async function Recall() {
             <ContentContainer heading="Recall">
                 <RecallSummaryContainer user={JSON.parse(JSON.stringify(user))} />
                 <hr/>
-                <CardPaginatedContainer heading="Your Following" description="Sources you follow" ids={user.following} type="sources" user={user} />
-                <CardPaginatedContainer heading="Your Comments" description="Comments you have made" ids={user.comments} type="comments" user={user} />
-                <CardPaginatedContainer heading="Your Discussions" description="Discussions you have made" ids={user.discussed} type="discussions" user={user} />
+                <CardPaginatedContainer heading="Your Following" description="Sources you follow" ids={user.following} type="sources" user={JSON.parse(JSON.stringify(user))} />
+                <CardPaginatedContainer heading="Your Comments" description="Comments you have made" ids={user.comments} type="comments" user={JSON.parse(JSON.stringify(user))} />
+                <CardPaginatedContainer heading="Your Discussions" description="Discussions you have made" ids={user.discussed} type="discussions" user={JSON.parse(JSON.stringify(user))} />
                 <hr/>
-                <CardPaginatedContainer heading="Liked Stories" description="Stories you have liked" ids={user.liked} type="stories" user={user} />
-                <CardPaginatedContainer heading="Liked Discussions" description="Discussions you have liked" ids={user.liked_discussions} type="discussions" user={user} />
-                <CardPaginatedContainer heading="Liked Comments" description="Comments you have liked" ids={user.liked_comments} type="comments" user={user} />
+                <CardPaginatedContainer heading="Liked Stories" description="Stories you have liked" ids={user.liked} type="stories" user={JSON.parse(JSON.stringify(user))} />
+                <CardPaginatedContainer heading="Liked Discussions" description="Discussions you have liked" ids={user.liked_discussions} type="discussions" user={JSON.parse(JSON.stringify(user))} />
+                <CardPaginatedContainer heading="Liked Comments" description="Comments you have liked" ids={user.liked_comments} type="comments" user={JSON.parse(JSON.stringify(user))} />
             </ContentContainer>
         </>
     )

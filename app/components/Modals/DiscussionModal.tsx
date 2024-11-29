@@ -11,17 +11,19 @@ export default function DiscussionModal({ user, story, isOpen, onOpenChange}: {u
     
     const router = useRouter();
     const [discussionText, setDiscussionText] = useState("");
+    const [discussionId, setDiscussionId] = useState("");
     const [posted, setPosted] = useState(false);
 
     const publishDiscussion = async () => {
         const post_response = await createDiscussion(user, story, discussionText)
+        setDiscussionId(post_response.id)
         setPosted(post_response.success);
     };
 
     const resetHandler = () => {
         setPosted(false);
         setDiscussionText("");
-        router.refresh();
+        router.push("/discussion/"+discussionId);
     };
      
     if (posted) {

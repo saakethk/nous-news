@@ -38,9 +38,8 @@ export default function RootLayout({
           showOptionalFields: false,
           socialButtonsPlacement: 'bottom',
           socialButtonsVariant: 'iconButton',
-          helpPageUrl: '/help',
-          privacyPageUrl: '/privacy',
-          termsPageUrl: '/terms',
+          privacyPageUrl: '/privacy-policy',
+          termsPageUrl: '/terms-of-service',
         },
       }}
       signInFallbackRedirectUrl={"/sign-in"}

@@ -36,7 +36,7 @@ export default function ReplyModal(
     const resetHandler = async () => {
         setPosted(false);
         setReplyText("");
-        if ( pathname == "/comment/"+comment.id) {
+        if (pathname == "/comment/"+comment.id) {
             router.refresh();
         } else {
             router.push("/comment/"+comment.id);
